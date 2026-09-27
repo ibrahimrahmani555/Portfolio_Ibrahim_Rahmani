@@ -57,7 +57,7 @@ const RouteSeo = () => {
     <Seo
       {...page}
       path={normalizedPath}
-      image={normalizedPath === "/" ? "/image1.jpeg" : undefined}
+      image={normalizedPath === "/" ? "/ibrahim-rahmani.jpeg" : undefined}
       structuredData={
         normalizedPath === "/"
           ? {
@@ -65,7 +65,7 @@ const RouteSeo = () => {
               "@type": "Person",
               name: "Ibrahim Rahmani",
               url: SITE_URL,
-              image: `${SITE_URL}/image1.jpeg`,
+              image: `${SITE_URL}/ibrahim-rahmani.jpeg`,
               jobTitle: "Full Stack Developer",
               sameAs: [
                 "https://github.com/ibrahimrh555",

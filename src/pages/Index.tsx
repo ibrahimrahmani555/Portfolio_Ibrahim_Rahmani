@@ -71,13 +71,13 @@ const Index = () => {
         </div>
 
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_380px] gap-12 items-center">
+          <div className="max-w-6xl mx-auto grid lg:grid-cols-[minmax(0,1fr)_320px] gap-10 items-center">
           <div className="text-center lg:text-left">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-8 tracking-tight"
+            className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight leading-[1.05]"
           >
             {t("home.heroTitle")} <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">{t("home.heroAccent")}</span>
           </motion.h1>
@@ -86,7 +86,7 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
+            className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
           >
             {t("home.heroDescription")}
           </motion.p>
@@ -115,10 +115,10 @@ const Index = () => {
             initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="mx-auto w-full max-w-[320px] lg:max-w-[380px] overflow-hidden rounded-[2rem] border border-white/10 bg-card shadow-2xl"
+            className="mx-auto w-full max-w-[280px] lg:max-w-[320px] overflow-hidden rounded-[2rem] border border-white/10 bg-card shadow-2xl"
           >
             <img
-              src={`${import.meta.env.BASE_URL}image1.jpeg`}
+              src={`${import.meta.env.BASE_URL}ibrahim-rahmani.jpeg`}
               alt="Portrait d’Ibrahim Rahmani, développeur Full Stack"
               width="586"
               height="808"
