@@ -71,7 +71,8 @@ const Index = () => {
         </div>
 
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto text-center">
+          <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_380px] gap-12 items-center">
+          <div className="text-center lg:text-left">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -85,7 +86,7 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed"
+            className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
           >
             {t("home.heroDescription")}
           </motion.p>
@@ -94,7 +95,7 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center"
           >
             <Button asChild size="lg" className="h-12 px-8 rounded-full group transition-transform hover:scale-105 active:scale-95">
             <Link to="/about">
@@ -109,6 +110,23 @@ const Index = () => {
             </a>
             </Button>
           </motion.div>
+          </div>
+          <motion.figure
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="mx-auto w-full max-w-[320px] lg:max-w-[380px] overflow-hidden rounded-[2rem] border border-white/10 bg-card shadow-2xl"
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}image1.jpeg`}
+              alt="Portrait d’Ibrahim Rahmani, développeur Full Stack"
+              width="586"
+              height="808"
+              loading="eager"
+              fetchPriority="high"
+              className="aspect-[4/5] h-full w-full object-cover object-top"
+            />
+          </motion.figure>
           </div>
         </div>
         </section>
