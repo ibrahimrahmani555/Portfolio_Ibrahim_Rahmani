@@ -118,7 +118,7 @@ const Index = () => {
             className="mx-auto w-full max-w-[280px] lg:max-w-[320px] overflow-hidden rounded-[2rem] border border-white/10 bg-card shadow-2xl"
           >
             <img
-              src={`${import.meta.env.BASE_URL}ibrahim-rahmani.jpeg`}
+              src={`${import.meta.env.BASE_URL}image 1.png`}
               alt="Portrait d’Ibrahim Rahmani, développeur Full Stack"
               width="586"
               height="808"
