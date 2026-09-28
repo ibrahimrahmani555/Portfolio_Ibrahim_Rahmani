@@ -75,7 +75,7 @@ const PostDetail = () => {
   return (
     <div className="min-h-screen bg-[#030303] text-white selection:bg-primary/30">
       <Seo
-        title={`${post.title} | Ibrahim Rahmani`}
+        title={`${post.title} | Rahmani Ibrahim`}
         description={post.excerpt}
         path={`/posts/${post.slug}`}
         image={post.cover_image_url}
@@ -89,7 +89,7 @@ const PostDetail = () => {
           datePublished: post.published_at,
           dateModified: post.updated_at,
           mainEntityOfPage: `${SITE_URL}/posts/${post.slug}`,
-          author: { "@type": "Person", name: "Ibrahim Rahmani", url: SITE_URL },
+          author: { "@type": "Person", name: "Rahmani Ibrahim", url: SITE_URL },
         }}
       />
       <Navigation />
