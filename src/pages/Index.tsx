@@ -119,7 +119,7 @@ const Index = () => {
           >
             <img
               src={`${import.meta.env.BASE_URL}image 1.png`}
-              alt="Portrait d’Ibrahim Rahmani, développeur Full Stack"
+              alt="Portrait de Rahmani Ibrahim, développeur Full Stack"
               width="586"
               height="808"
               loading="eager"
