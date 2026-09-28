@@ -47,9 +47,9 @@ const Navigation = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-cover backdrop-blur-xl border-b border-border/50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center gap-2 font-display text-4xl font-bold text-primary hover:text-accent transition-colors group">
-            <img src={`${import.meta.env.BASE_URL}i%20(1).png`} alt="Logo Ibrahim Rahmani" className="h-12 w-auto transition-transform" />
-            Ißrahim
+          <Link to="/" className="flex items-center gap-2 font-display text-xl sm:text-2xl font-bold text-primary hover:text-accent transition-colors group">
+            <img src={`${import.meta.env.BASE_URL}i%20(1).png`} alt="Logo Rahmani Ibrahim" className="h-12 w-auto transition-transform" />
+            Rahmani Ibrahim
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
