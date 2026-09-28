@@ -51,7 +51,7 @@ const resources = {
         heading: "À propos de moi", valuesTitle: "Mes valeurs & soft skills", skillsTitle: "Expertise technique",
         galleryAlt: "Projet ou activité {{count}}",
         bio: {
-          intro: "Je suis <strong>Ibrahim Rahmani</strong>, élève ingénieur en Génie Informatique, option TALIS, à l’<school>ENSA Khouribga</school>.",
+          intro: "Je suis <strong>Rahmani Ibrahim</strong>, élève ingénieur en Génie Informatique, option TALIS, à l’<school>ENSA Khouribga</school>.",
           experience: "Spécialisé en développement <strong>Full Stack web et mobile</strong>, je travaille avec React, React Native, TypeScript, Spring Boot, Django, Hono et tRPC. Mes expériences couvrent les applications mobiles, les APIs backend, les plateformes métier et les systèmes IoT connectés avec ESP32.",
           goal: "Après avoir réalisé mon PFA sur l’application mobile <strong>10in</strong>, je recherche un <strong>stage PFE 2026/2027</strong> pour contribuer à des produits web ou mobiles ambitieux et approfondir mon expertise en ingénierie logicielle."
         },
@@ -115,7 +115,7 @@ const resources = {
         heading: "About me", valuesTitle: "My values & soft skills", skillsTitle: "Technical expertise",
         galleryAlt: "Project or activity {{count}}",
         bio: {
-          intro: "I am <strong>Ibrahim Rahmani</strong>, a Computer Engineering student specializing in TALIS at <school>ENSA Khouribga</school>.",
+          intro: "I am <strong>Rahmani Ibrahim</strong>, a Computer Engineering student specializing in TALIS at <school>ENSA Khouribga</school>.",
           experience: "Specialized in <strong>Full Stack web and mobile development</strong>, I work with React, React Native, TypeScript, Spring Boot, Django, Hono and tRPC. My experience covers mobile applications, backend APIs, business platforms and ESP32-connected IoT systems.",
           goal: "After completing my final-year project on the <strong>10in</strong> mobile application, I am seeking a <strong>2026/2027 graduation internship</strong> to contribute to ambitious web or mobile products and deepen my software engineering expertise."
         },
