@@ -37,7 +37,7 @@ const ProjectDetail = () => {
     <div className="min-h-screen bg-background">
       {project && (
         <Seo
-          title={`${project.title} | Ibrahim Rahmani`}
+          title={`${project.title} | Rahmani Ibrahim`}
           description={project.short_description || project.description.slice(0, 160)}
           path={`/projects/${project.slug}`}
           image={project.image_url}
@@ -48,7 +48,7 @@ const ProjectDetail = () => {
             description: project.short_description || project.description,
             image: project.image_url,
             url: `${SITE_URL}/projects/${project.slug}`,
-            author: { "@type": "Person", name: "Ibrahim Rahmani" },
+            author: { "@type": "Person", name: "Rahmani Ibrahim" },
           }}
         />
       )}
