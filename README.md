@@ -1,17 +1,17 @@
 <div align="center">
 
-# Portfolio — Ibrahim Rahmani
+# Portfolio — Rahmani Ibrahim
 
 Portfolio Full Stack moderne pour présenter mes compétences, mes projets et mes articles techniques.
 
-[![CI/CD](https://github.com/ibrahimrh555/Portfolio_Ibrahim_Rahmani/actions/workflows/deploy.yml/badge.svg)](https://github.com/ibrahimrh555/Portfolio_Ibrahim_Rahmani/actions/workflows/deploy.yml)
+[![CI/CD](https://github.com/ibrahimrahmani555/Portfolio_Ibrahim_Rahmani/actions/workflows/deploy.yml/badge.svg)](https://github.com/ibrahimrahmani555/Portfolio_Ibrahim_Rahmani/actions/workflows/deploy.yml)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![Django](https://img.shields.io/badge/Django-5.2-092E20?logo=django&logoColor=white)](https://www.djangoproject.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-4169E1?logo=postgresql&logoColor=white)](https://neon.tech/)
 
-[Voir le portfolio](https://ibrahimrh555.github.io/Portfolio_Ibrahim_Rahmani/) ·
+[Voir le portfolio](https://rahmanibra.me/) ·
 [Explorer l’API](https://portfolio-ibrahim-rahmani-ten.vercel.app/api/) ·
-[Signaler un problème](https://github.com/ibrahimrh555/Portfolio_Ibrahim_Rahmani/issues)
+[Signaler un problème](https://github.com/ibrahimrahmani555/Portfolio_Ibrahim_Rahmani/issues)
 
 </div>
 
@@ -93,7 +93,7 @@ Portfolio_Ibrahim_Rahmani/
 ### 1. Cloner le dépôt
 
 ```bash
-git clone https://github.com/ibrahimrh555/Portfolio_Ibrahim_Rahmani.git
+git clone https://github.com/ibrahimrahmani555/Portfolio_Ibrahim_Rahmani.git
 cd Portfolio_Ibrahim_Rahmani
 ```
 
@@ -245,13 +245,15 @@ v1.1.0  Nouvelle fonctionnalité compatible
 v2.0.0  Évolution majeure
 ```
 
-Les versions publiées sont disponibles dans la section [Releases](https://github.com/ibrahimrh555/Portfolio_Ibrahim_Rahmani/releases).
+Les versions publiées sont disponibles dans la section [Releases](https://github.com/ibrahimrahmani555/Portfolio_Ibrahim_Rahmani/releases).
 
 ## Contact
 
-**Ibrahim Rahmani**
+**Rahmani Ibrahim**
 
-- GitHub : [@ibrahimrh555](https://github.com/ibrahimrh555)
+- Site : [rahmanibra.me](https://rahmanibra.me)
+- GitHub : [@ibrahimrahmani555](https://github.com/ibrahimrahmani555)
+- LinkedIn : [Rahmani Ibrahim](https://www.linkedin.com/in/ibrahim-rahmani-433418387/)
 
 ---
 

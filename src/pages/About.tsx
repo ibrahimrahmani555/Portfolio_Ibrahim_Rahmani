@@ -99,7 +99,7 @@ const About = () => {
                   <div className="relative w-80 h-80 rounded-full overflow-hidden border-4 border-background shadow-2xl ring-4 ring-primary/20">
                     <img 
                       src={`${baseUrl}image 1.png`} 
-                      alt="Ibrahim Rahmani Workspace"
+                      alt="Rahmani Ibrahim Workspace"
                       className="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
                     />
                   </div>
