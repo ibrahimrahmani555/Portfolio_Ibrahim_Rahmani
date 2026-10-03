@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { ArrowRight, Filter, TrendingUp } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { formatDate, getPosts, type PostSummary } from "@/lib/api";
 import { useTranslation } from "react-i18next";
+import fallbackCover from "@/assets/workspace.jpg";
 
 const Posts = () => {
   const { t, i18n } = useTranslation();
@@ -28,9 +28,6 @@ const Posts = () => {
       .finally(() => setLoading(false));
     return () => controller.abort();
   }, [i18n.resolvedLanguage]);
-
-  const featuredPosts = posts.filter((post) => post.featured);
-  const regularPosts = posts.filter((post) => !post.featured);
 
   return (
     <div className="min-h-screen bg-[#030303] text-white">
@@ -59,69 +56,61 @@ const Posts = () => {
               <p className="text-center text-white/40">{t("posts.empty")}</p>
             )}
 
-            {!loading && !error && featuredPosts.length > 0 && (
-              <section className="mb-24">
-                <div className="flex items-center gap-2 mb-10">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                  <h2 className="text-sm font-bold uppercase tracking-widest text-white/50">{t("posts.featured")}</h2>
-                </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {featuredPosts.map((post) => (
-                    <motion.article key={post.id} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="group">
-                      <Link to={`/posts/${post.slug}`} className="block space-y-6">
-                        {post.cover_image_url && (
-                          <div className="aspect-[16/9] overflow-hidden rounded-2xl bg-white/5 border border-white/10">
-                            <img src={post.cover_image_url} alt={post.title} className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" />
-                          </div>
-                        )}
-                        <div className="space-y-4">
-                          <div className="flex flex-wrap items-center gap-3">
-                            {post.tags.map((tag) => (
-                              <span key={tag} className="text-[10px] font-bold uppercase tracking-widest text-primary">{tag}</span>
-                            ))}
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-white/20">• {t("posts.minutes", { count: post.read_time })}</span>
-                          </div>
-                          <h3 className="text-2xl font-bold tracking-tight group-hover:text-primary transition-colors">{post.title}</h3>
-                          <p className="text-white/40 leading-relaxed line-clamp-2">{post.excerpt}</p>
-                          <div className="flex items-center gap-2 text-sm font-bold">{t("posts.read")} <ArrowRight className="h-4 w-4 text-primary" /></div>
+            {!loading && !error && posts.length > 0 && (
+              <section aria-labelledby="all-posts-title">
+                <h2 id="all-posts-title" className="mb-10 text-sm font-bold uppercase tracking-widest text-white/50">
+                  {t("posts.all")}
+                </h2>
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+                  {posts.map((post, index) => (
+                    <motion.article
+                      key={post.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.45, delay: Math.min(index * 0.06, 0.24) }}
+                      viewport={{ once: true, amount: 0.15 }}
+                      className="group min-w-0 border border-[#302d28] bg-[#151513] p-5 transition-colors duration-300 hover:border-[#756851] focus-within:border-primary/70"
+                    >
+                      <Link
+                        to={`/posts/${post.slug}`}
+                        className="flex h-full flex-col focus-visible:outline-none"
+                        aria-label={`${t("posts.read")} : ${post.title}`}
+                      >
+                        <div className="relative aspect-[16/10] overflow-hidden bg-[#0b0b0a]">
+                          <img
+                            src={post.cover_image_url || fallbackCover}
+                            alt=""
+                            className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-[1.035] group-hover:opacity-100"
+                            loading="lazy"
+                          />
+                          <span className="absolute inset-0 bg-black/10 transition-colors group-hover:bg-black/25" />
+                          <span className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#5b5143] bg-[#1b1916]/90 text-[#d3c1a5] backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:border-primary group-hover:bg-primary group-hover:text-black">
+                            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                          </span>
+                        </div>
+
+                        <div className="flex flex-1 flex-col px-1 pb-2 pt-7">
+                          <time
+                            dateTime={post.published_at || undefined}
+                            className="mb-3 text-[10px] font-medium uppercase tracking-[0.08em] text-[#8d806d]"
+                          >
+                            {formatDate(post.published_at)}
+                          </time>
+                          <h3 className="font-display text-[1.35rem] font-normal leading-[1.3] tracking-wide text-[#dfd3bf] transition-colors group-hover:text-primary">
+                            {post.title}
+                          </h3>
+                          <p className="mt-3 line-clamp-3 text-sm leading-6 text-[#9f927f]">
+                            {post.excerpt}
+                          </p>
+                          <span className="mt-7 w-fit border border-[#423c33] px-2.5 py-1.5 text-[9px] font-medium uppercase tracking-wide text-[#aa9b84] transition-colors group-hover:border-primary/60 group-hover:text-primary">
+                            {post.category || post.tags[0] || "Article"}
+                          </span>
                         </div>
                       </Link>
                     </motion.article>
                   ))}
                 </div>
               </section>
-            )}
-
-            {!loading && !error && regularPosts.length > 0 && (
-            <section>
-              <div className="flex items-center justify-between mb-10">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-white/50">{t("posts.all")}</h2>
-                <Filter className="h-4 w-4 text-white/20" />
-              </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {regularPosts.map((post) => (
-                  <article key={post.id} className="group rounded-2xl border border-white/10 bg-white/[0.02] hover:border-primary/30 transition-all hover:-translate-y-1">
-                    <Link to={`/posts/${post.slug}`} className="flex h-full flex-col justify-between p-6 gap-6">
-                      <div className="space-y-3">
-                        <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em]">{formatDate(post.published_at)}</span>
-                        <h3 className="text-2xl font-bold group-hover:translate-x-2 transition-transform duration-300">{post.title}</h3>
-                        <p className="text-white/40 text-sm line-clamp-3 italic">{post.excerpt}</p>
-                      </div>
-                      <div className="flex items-end justify-between gap-4">
-                        <div className="flex flex-wrap gap-2">
-                          {post.tags.map((tag) => (
-                            <Badge key={tag} variant="outline" className="border-white/10 text-[10px] text-white/40 uppercase">{tag}</Badge>
-                          ))}
-                        </div>
-                        <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-black transition-all">
-                          <ArrowRight className="h-5 w-5 -rotate-45 group-hover:rotate-0 transition-transform" />
-                        </div>
-                      </div>
-                    </Link>
-                  </article>
-                ))}
-              </div>
-            </section>
             )}
           </div>
         </div>
