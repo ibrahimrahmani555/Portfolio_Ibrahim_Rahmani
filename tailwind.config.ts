@@ -15,8 +15,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Space Grotesk', 'Inter', 'sans-serif'],
+        sans: ['Fira Code', 'monospace'],
+        display: ['Fira Code', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",
