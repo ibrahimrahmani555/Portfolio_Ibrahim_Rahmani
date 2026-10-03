@@ -29,4 +29,5 @@ __pycache__/
 backend/db.sqlite3
 backend/staticfiles/
 backend/.env
+backend/.venv
 .env.local
