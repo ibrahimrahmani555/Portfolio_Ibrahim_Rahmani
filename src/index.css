@@ -1,129 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500&family=Playfair+Display:ital,wght@1,400&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3%;
-
-    --card: 0 0% 98%;
-    --card-foreground: 0 0% 3%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3%;
-
-    --primary: 43 100% 55%;
-    --primary-foreground: 0 0% 3%;
-    --primary-glow: 48 100% 60%;
-
-    --secondary: 0 0% 94%;
-    --secondary-foreground: 0 0% 3%;
-
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
-
-    --accent: 35 100% 58%;
-    --accent-foreground: 0 0% 3%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 43 100% 55%;
-
-    --radius: 0.75rem;
-
-    /* Gradients - Light Mode */
-    --gradient-primary: linear-gradient(135deg, hsl(43 100% 55%) 0%, hsl(35 100% 58%) 100%);
-    --gradient-hero: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 98%) 50%, hsl(0 0% 100%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 98%) 0%, hsl(0 0% 96%) 100%);
-    --gradient-mesh: radial-gradient(circle at 20% 50%, hsla(43, 100%, 55%, 0.06) 0%, transparent 50%),
-                      radial-gradient(circle at 80% 80%, hsla(35, 100%, 58%, 0.04) 0%, transparent 50%);
-    
-    /* Shadows - Light Mode */
-    --shadow-glow: 0 0 60px hsla(43, 100%, 55%, 0.15);
-    --shadow-glow-strong: 0 0 80px hsla(43, 100%, 55%, 0.25);
-    --shadow-elegant: 0 20px 40px -15px hsla(0, 0%, 0%, 0.1);
-    --shadow-card: 0 8px 24px -8px hsla(0, 0%, 0%, 0.08);
-    
-    /* Animations */
-    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  }
-
-  .dark {
-    --background: 0 0% 3%;
-    --foreground: 0 0% 98%;
-
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 43 100% 55%;
-    --primary-foreground: 0 0% 3%;
-    --primary-glow: 48 100% 60%;
-
-    --secondary: 0 0% 14%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 62%;
-
-    --accent: 35 100% 58%;
-    --accent-foreground: 0 0% 3%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 16%;
-    --input: 0 0% 16%;
-    --ring: 43 100% 55%;
-
-    /* Gradients - Dark Mode */
-    --gradient-primary: linear-gradient(135deg, hsl(43 100% 55%) 0%, hsl(35 100% 58%) 100%);
-    --gradient-hero: linear-gradient(180deg, hsl(0 0% 3%) 0%, hsl(0 0% 5%) 50%, hsl(0 0% 3%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 7%) 0%, hsl(0 0% 9%) 100%);
-    --gradient-mesh: radial-gradient(circle at 20% 50%, hsla(43, 100%, 55%, 0.08) 0%, transparent 50%),
-                      radial-gradient(circle at 80% 80%, hsla(35, 100%, 58%, 0.06) 0%, transparent 50%);
-    
-    /* Shadows - Dark Mode */
-    --shadow-glow: 0 0 60px hsla(43, 100%, 55%, 0.2);
-    --shadow-glow-strong: 0 0 80px hsla(43, 100%, 55%, 0.3);
-    --shadow-elegant: 0 20px 40px -15px hsla(0, 0%, 0%, 0.6);
-    --shadow-card: 0 8px 24px -8px hsla(0, 0%, 0%, 0.4);
-  }
+  :root,.dark{--background:0 0% 5.5%;--foreground:36 38% 75%;--card:30 15% 8%;--card-foreground:36 38% 75%;--popover:30 15% 8%;--popover-foreground:36 38% 75%;--primary:36 38% 75%;--primary-foreground:0 0% 5.5%;--secondary:36 27% 13%;--secondary-foreground:36 38% 75%;--muted:36 18% 13%;--muted-foreground:36 23% 53%;--accent:36 38% 75%;--accent-foreground:0 0% 5.5%;--destructive:0 70% 50%;--destructive-foreground:0 0% 100%;--border:36 38% 75%;--input:36 38% 75%;--ring:36 38% 75%;--radius:2px}
+  *{@apply border-border}html{scroll-behavior:smooth}body{@apply bg-background text-foreground antialiased;font-family:"Manrope",sans-serif;background-image:radial-gradient(circle at 50% 0%,rgba(218,197,167,.045),transparent 34%)}
+  h1,h2,h3{font-weight:300} :focus-visible{outline:1px solid hsl(var(--ring));outline-offset:4px}::selection{background:rgba(218,197,167,.28)}
 }
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-  }
-
-  :focus-visible {
-    outline: 3px solid hsl(var(--ring));
-    outline-offset: 3px;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      scroll-behavior: auto !important;
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
+@layer components{
+  .arik-shell{@apply mx-auto w-full max-w-[1400px] px-6 lg:px-10}
+  .arik-panel{@apply border border-primary/15 bg-primary/[.045] backdrop-blur-[15px]}
+  .arik-label{@apply text-[11px] uppercase tracking-[.16em] text-primary}
+  .arik-title{@apply text-5xl leading-[.96] tracking-[-.03em] text-primary md:text-7xl lg:text-[96px]}
+  .arik-italic{font-family:"Playfair Display",serif;font-style:italic}
+  .arik-button{@apply inline-flex items-center justify-center gap-2 rounded-[2px] bg-primary px-5 py-3 text-[11px] font-medium uppercase tracking-[.16em] text-primary-foreground transition hover:brightness-110}
+  .arik-circle{@apply inline-flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-primary/[.06] text-primary backdrop-blur}
+  .noise{background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E")}
 }
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
