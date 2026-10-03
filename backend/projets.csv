@@ -1,0 +1,14 @@
+﻿titre,lien,image,description,technologies,code,statut
+10in — Application sociale de football,https://rahmanibra.me/projects/10in-social-football-app,https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1200&q=80,"10in est une application mobile sociale consacrée au football amateur.
+
+Elle permet aux joueurs de découvrir des matchs disponibles dans leur ville, consulter les informations d’une rencontre, voir les participants, rejoindre ou quitter un match et consulter leurs matchs à venir ainsi que leur historique.
+
+L’application permet également de créer et gérer des matchs en définissant le titre, la description, la ville, le lieu, la date, l’heure, le format, la capacité et éventuellement le cercle associé.
+
+Le module des cercles permet de créer des communautés de joueurs, rejoindre ou quitter un cercle, consulter les membres, gérer les adhésions et associer des matchs à un cercle.
+
+Le profil permet à chaque utilisateur de modifier son nom, sa ville et sa photo, de consulter les profils des autres joueurs et de gérer ses préférences de notifications.
+
+L’authentification utilise un code OTP envoyé par e-mail. Le parcours d’onboarding permet ensuite à l’utilisateur d’enregistrer son nom, sélectionner sa ville, ajouter une photo et configurer les notifications.
+
+Le projet repose sur une architecture monorepo comprenant une application mobile Expo React Native, une API Hono avec tRPC, une base de données Turso avec Drizzle ORM et une authentification Better Auth. Le backend est déployé sur Cloudflare Workers.",React Native; Expo; Expo Router; TypeScript; Hono; tRPC; Cloudflare Workers; Drizzle ORM; Turso; Better Auth; OneSignal; Resend; Turborepo; pnpm,https://github.com/ibrahimrahmani555/10,OK

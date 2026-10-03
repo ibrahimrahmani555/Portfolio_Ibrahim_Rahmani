@@ -1,6 +1,8 @@
 import i18n from "@/i18n";
 
-const DEFAULT_API_URL = "https://portfolio-ibrahim-rahmani-ten.vercel.app/api";
+const DEFAULT_API_URL = import.meta.env.DEV
+  ? "http://127.0.0.1:8000/api"
+  : "https://portfolio-ibrahim-rahmani-ten.vercel.app/api";
 const configuredUrl = import.meta.env.VITE_API_URL?.trim() || DEFAULT_API_URL;
 export const isApiConfigured = Boolean(configuredUrl);
 const API_URL = configuredUrl.replace(/\/$/, "");
