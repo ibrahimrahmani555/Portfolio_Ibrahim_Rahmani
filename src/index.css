@@ -9,10 +9,10 @@
   h1,h2,h3{font-weight:300} :focus-visible{outline:1px solid hsl(var(--ring));outline-offset:4px}::selection{background:rgba(218,197,167,.28)}
 }
 @layer components{
-  .arik-shell{@apply mx-auto w-full max-w-[1400px] px-6 lg:px-10}
+  .arik-shell{@apply mx-auto w-full max-w-[1120px] px-6 lg:px-10}
   .arik-panel{@apply border border-primary/15 bg-primary/[.045] backdrop-blur-[15px]}
   .arik-label{@apply text-[11px] uppercase tracking-[.16em] text-primary}
-  .arik-title{@apply text-5xl leading-[.96] tracking-[-.03em] text-primary md:text-7xl lg:text-[96px]}
+  .arik-title{@apply text-4xl leading-[.96] tracking-[-.03em] text-primary md:text-5xl lg:text-[60px]}
   .arik-italic{font-family:"Playfair Display",serif;font-style:italic}
   .arik-button{@apply inline-flex items-center justify-center gap-2 rounded-[2px] bg-primary px-5 py-3 text-[11px] font-medium uppercase tracking-[.16em] text-primary-foreground transition hover:brightness-110}
   .arik-circle{@apply inline-flex h-10 w-10 items-center justify-center rounded-full border border-primary/20 bg-primary/[.06] text-primary backdrop-blur}

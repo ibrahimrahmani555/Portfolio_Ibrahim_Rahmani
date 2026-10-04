@@ -53,7 +53,7 @@ const ProjectDetail = () => {
         />
       )}
       <Navigation />
-      <main id="main-content" tabIndex={-1} className="pt-24 pb-16">
+      <main id="main-content" tabIndex={-1} className="pt-24 pb-12">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <Button variant="ghost" className="mb-8 -ml-4 text-muted-foreground" asChild>
@@ -72,12 +72,12 @@ const ProjectDetail = () => {
             )}
 
             {!loading && project && (
-              <article className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+              <article className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
                 <div className="overflow-hidden rounded-3xl border border-border bg-card">
                   <img
                     src={project.image_url}
                     alt={project.title}
-                    className="aspect-[4/3] w-full object-cover"
+                    className="aspect-video w-full object-cover"
                   />
                 </div>
 
@@ -86,7 +86,7 @@ const ProjectDetail = () => {
                     <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-primary">
                       {t("projectDetail.eyebrow")}
                     </p>
-                    <h1 className="font-display text-4xl font-bold leading-tight text-foreground md:text-6xl">
+                    <h1 className="font-display text-4xl font-bold leading-tight text-foreground md:text-5xl">
                       {project.title}
                     </h1>
                   </div>
