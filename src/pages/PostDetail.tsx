@@ -48,16 +48,16 @@ const PostDetail = () => {
       <Navigation />
       <main id="main-content" tabIndex={-1} className="pb-28 pt-44">
         <article>
-          <header className="arik-shell">
+          <header className="arik-shell flex min-h-[900px] flex-col justify-end pb-24">
             <Link to="/posts" className="inline-flex items-center gap-3 text-xs uppercase tracking-[.15em] text-primary/50 hover:text-primary"><ArrowLeft size={15} />{t("postDetail.back")}</Link>
-            <div className="mt-14 grid items-center gap-14 lg:grid-cols-[1.05fr_.95fr]">
+            <div className="mt-14 grid items-end gap-14 lg:grid-cols-2">
               <div>
                 <p className="arik-label">{post.category || post.tags[0] || "Article"}</p>
                 <h1 className="mt-6 text-5xl leading-[.96] md:text-7xl">{post.title}</h1>
                 <p className="mt-7 max-w-xl leading-7 text-primary/55">{post.excerpt}</p>
                 <div className="mt-10 flex flex-wrap gap-7 border-y border-primary/15 py-5 text-xs text-primary/45"><span className="flex items-center gap-2"><Calendar size={14} />{formatDate(post.published_at)}</span><span className="flex items-center gap-2"><Clock size={14} />{t("postDetail.readTime", { count: post.read_time })}</span></div>
               </div>
-              {post.cover_image_url && <div className="relative aspect-[4/3] overflow-hidden bg-card"><img src={post.cover_image_url} alt={post.title} className="h-full w-full object-cover opacity-85" /><span className="noise absolute inset-0" /></div>}
+              {post.cover_image_url && <div className="relative h-[650px] overflow-hidden bg-card"><div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-background" /><img src={post.cover_image_url} alt={post.title} className="h-full w-full object-cover opacity-85" /><span className="noise absolute inset-0" /></div>}
             </div>
           </header>
 
