@@ -23,10 +23,10 @@ const About = () => (
   <div className="min-h-screen">
     <Navigation />
     <main id="main-content" tabIndex={-1}>
-      <section className="arik-shell grid items-start gap-12 pb-32 pt-56 lg:grid-cols-[520px_minmax(0,800px)] lg:gap-20">
-        <div className="relative h-[590px] overflow-hidden mix-blend-lighten lg:sticky lg:top-36">
+      <section className="arik-shell grid items-start gap-12 pb-32 pt-56 lg:grid-cols-[420px_minmax(0,800px)] lg:justify-center lg:gap-20">
+        <div className="relative mx-auto h-[500px] w-full max-w-[420px] overflow-hidden mix-blend-lighten lg:sticky lg:top-40">
           <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-background" />
-          <img src={`${import.meta.env.BASE_URL}ibrahim-arik-portrait.png`} alt="Portrait d’Ibrahim Rahmani" className="h-full w-full object-cover object-[center_22%]" />
+          <img src={`${import.meta.env.BASE_URL}ibrahim-arik-portrait.png`} alt="Portrait d’Ibrahim Rahmani" className="h-full w-full object-cover object-[center_20%]" />
         </div>
 
         <div className="flex flex-col gap-32 lg:pt-16">
