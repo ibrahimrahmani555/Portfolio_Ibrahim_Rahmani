@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+from .forms import PostAdminForm, ProjectAdminForm
+
 from .models import (
     Category,
     CategoryTranslation,
@@ -38,7 +40,10 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ("title", "published", "featured", "order", "updated_at")
+    form = ProjectAdminForm
+    list_display = (
+        "title", "has_database_image", "published", "featured", "order", "updated_at",
+    )
     list_filter = ("published", "featured")
     list_editable = ("published", "featured", "order")
     search_fields = (
@@ -48,10 +53,17 @@ class ProjectAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     inlines = (ProjectTranslationInline,)
 
+    @admin.display(boolean=True, description="Image enregistrée")
+    def has_database_image(self, obj):
+        return bool(obj.image_data)
+
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ("title", "status", "featured", "category", "published_at", "updated_at")
+    form = PostAdminForm
+    list_display = (
+        "title", "has_database_image", "status", "featured", "category", "published_at", "updated_at",
+    )
     list_filter = ("status", "featured", "category")
     list_editable = ("status", "featured")
     search_fields = (
@@ -61,3 +73,7 @@ class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     date_hierarchy = "published_at"
     inlines = (PostTranslationInline,)
+
+    @admin.display(boolean=True, description="Image enregistrée")
+    def has_database_image(self, obj):
+        return bool(obj.cover_image_data)
