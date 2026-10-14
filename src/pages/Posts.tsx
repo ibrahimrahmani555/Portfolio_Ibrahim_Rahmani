@@ -6,7 +6,9 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { formatDate, getPosts, type PostSummary } from "@/lib/api";
 
-const PostCard = ({ post }: { post: PostSummary }) => (
+const PostCard = ({ post }: { post: PostSummary }) => {
+  const { t } = useTranslation();
+  return (
   <article className="group arik-panel flex h-full flex-col overflow-hidden">
     <Link to={`/posts/${post.slug}`} className="relative block aspect-video overflow-hidden bg-card">
       {post.cover_image_url ? (
@@ -17,18 +19,19 @@ const PostCard = ({ post }: { post: PostSummary }) => (
     </Link>
     <div className="flex flex-1 flex-col p-5">
       <div className="flex items-center justify-between gap-4 text-[10px] uppercase tracking-[.15em] text-primary/45">
-        <span>{post.category || post.tags[0] || "Article"}</span>
+        <span>{post.category || post.tags[0] || t("posts.featured")}</span>
         <span>{formatDate(post.published_at)}</span>
       </div>
       <h2 className="mt-5 text-xl leading-tight text-primary transition group-hover:text-white">{post.title}</h2>
       <p className="mt-4 line-clamp-3 leading-7 text-primary/50">{post.excerpt}</p>
       <div className="mt-auto flex items-center justify-between pt-8">
-        <span className="flex items-center gap-2 text-xs text-primary/45"><Clock size={14} />{post.read_time} min</span>
-        <Link to={`/posts/${post.slug}`} className="text-[11px] uppercase tracking-[.15em]">Lire l’article</Link>
+        <span className="flex items-center gap-2 text-xs text-primary/45"><Clock size={14} />{t("posts.minutes", { count: post.read_time })}</span>
+        <Link to={`/posts/${post.slug}`} className="text-[11px] uppercase tracking-[.15em]">{t("posts.read")}</Link>
       </div>
     </div>
   </article>
-);
+  );
+};
 
 const Posts = () => {
   const { t, i18n } = useTranslation();
@@ -55,10 +58,10 @@ const Posts = () => {
       <main id="main-content" tabIndex={-1}>
         <header className="arik-shell grid min-h-[460px] items-end gap-8 pb-10 pt-28 md:grid-cols-2">
           <div>
-            <p className="arik-label">Réflexions & expertise</p>
+            <p className="arik-label">{t("posts.eyebrow")}</p>
             <h1 className="mt-6 text-4xl leading-[.9] md:text-[64px]">Blog &<br /><span className="arik-italic">articles</span></h1>
-            <p className="mt-8 max-w-xl text-lg leading-8 text-primary/55">Développement, architecture, DevOps et retours d’expérience autour de mes projets.</p>
-            {heroPost && <Link to={`/posts/${heroPost.slug}`} className="arik-button mt-6">Article à la une <ArrowUpRight size={16} /></Link>}
+            <p className="mt-8 max-w-xl text-lg leading-8 text-primary/55">{t("posts.description")}</p>
+            {heroPost && <Link to={`/posts/${heroPost.slug}`} className="arik-button mt-6">{t("posts.featuredButton")} <ArrowUpRight size={16} /></Link>}
           </div>
           <div className="relative mx-auto h-[300px] md:h-[360px] w-full overflow-hidden bg-primary/[.04]">
             <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-background" />
@@ -75,8 +78,8 @@ const Posts = () => {
         {!loading && !error && posts.length > 0 && (
           <section className="arik-shell py-12">
             <div className="mb-10 flex items-end justify-between border-b border-primary/15 pb-6">
-              <h2 className="text-4xl md:text-5xl">Derniers articles</h2>
-              <span className="arik-label">{posts.length.toString().padStart(2, "0")} publications</span>
+              <h2 className="text-4xl md:text-5xl">{t("posts.latest")}</h2>
+              <span className="arik-label">{posts.length.toString().padStart(2, "0")} {t("posts.publications")}</span>
             </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">{posts.map((post) => <PostCard key={post.id} post={post} />)}</div>
           </section>

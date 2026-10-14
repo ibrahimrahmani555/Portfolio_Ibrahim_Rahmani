@@ -65,7 +65,7 @@ const Navigation = () => {
             <button
               onClick={() => setLanguageMenuOpen(!languageMenuOpen)}
               className="flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-primary/10"
-              aria-label={`Choisir la langue, actuelle : ${lang.toUpperCase()}`}
+              aria-label={t("navigation.chooseLanguage", { language: lang.toUpperCase() })}
               aria-expanded={languageMenuOpen}
             >
               <Languages size={18} />
@@ -73,7 +73,7 @@ const Navigation = () => {
             {languageMenuOpen && languageOptions}
           </div>
         </div>
-        <button className="md:hidden" onClick={() => setOpen(!open)} aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}>
+        <button className="md:hidden" onClick={() => setOpen(!open)} aria-label={open ? t("navigation.closeMenu") : t("navigation.openMenu")}>
           {open ? <X size={18} /> : <Menu size={18} />}
         </button>
       </nav>
@@ -88,7 +88,7 @@ const Navigation = () => {
               <button
                 onClick={() => setLanguageMenuOpen(!languageMenuOpen)}
                 className="flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-primary/10"
-                aria-label={`Choisir la langue, actuelle : ${lang.toUpperCase()}`}
+                aria-label={t("navigation.chooseLanguage", { language: lang.toUpperCase() })}
                 aria-expanded={languageMenuOpen}
               >
                 <Languages size={18} />

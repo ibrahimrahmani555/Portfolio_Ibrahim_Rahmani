@@ -1,38 +1,30 @@
 ﻿import { useEffect, useState } from "react";
 import { ArrowDown, ArrowUpRight, Check, Download } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { ProjectTile, ServiceCard } from "@/components/ArikUI";
 import { getProjects, type Project } from "@/lib/api";
-const process = [
+const processKeys = [
   {
-    tag: "Découverte",
-    title: "Analyse du besoin",
-    text: "Nous clarifions vos objectifs, vos utilisateurs et les problèmes que le produit doit résoudre.",
+    key: "discovery",
   },
   {
-    tag: "Stratégie",
-    title: "Conception & architecture",
-    text: "Je transforme les besoins en parcours, maquettes et architecture technique cohérente.",
+    key: "strategy",
   },
   {
-    tag: "Création",
-    title: "Design d’interface",
-    text: "Je construis une interface haut de gamme, accessible et fidèle à votre identité.",
+    key: "creation",
   },
   {
-    tag: "Développement",
-    title: "Implémentation",
-    text: "React, Django ou Spring Boot donnent vie au produit avec une base maintenable.",
+    key: "development",
   },
   {
-    tag: "Qualité",
-    title: "Tests & déploiement",
-    text: "Tests, CI/CD, performance, SEO et suivi garantissent une mise en production fiable.",
+    key: "quality",
   },
 ];
 const Index = () => {
+  const { t } = useTranslation();
   const [projects, setProjects] = useState<Project[]>([]);
   const [projectsLoading, setProjectsLoading] = useState(true);
   const [projectsError, setProjectsError] = useState(false);
@@ -61,7 +53,7 @@ const Index = () => {
             <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-background" />
             <img
               src={`${import.meta.env.BASE_URL}ibrahim-arik-portrait.png`}
-              alt="Portrait cinématique d’Ibrahim Rahmani"
+              alt={t("about.page.portraitAlt")}
               fetchPriority="high"
               className="mx-auto h-full w-full object-cover object-[center_22%] contrast-110"
             />
@@ -73,15 +65,14 @@ const Index = () => {
               <span className="arik-italic">& Software Engineer</span>
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-primary/55 sm:mt-6 sm:text-lg sm:leading-8">
-              Développement web, mobile, backend et DevOps pour créer des
-              produits numériques utiles, rapides et durables.
+              {t("home.heroDescription")}
             </p>
             <div className="mt-6 flex w-full flex-col items-center justify-center gap-3 sm:mt-8 sm:flex-row sm:gap-4">
               <Link
                 to="/about"
                 className="arik-button min-h-12 w-full gap-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary sm:w-auto"
               >
-                Voir mon parcours <ArrowUpRight size={16} aria-hidden="true" />
+                {t("home.viewJourney")} <ArrowUpRight size={16} aria-hidden="true" />
               </Link>
               <a
                 href={`${import.meta.env.BASE_URL}CV_PFE.pdf`}
@@ -89,13 +80,13 @@ const Index = () => {
                 className="inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-[2px] border border-primary/20 bg-primary/[.025] px-5 py-3 text-[11px] font-medium uppercase tracking-[.16em] text-primary transition hover:border-primary/50 hover:bg-primary/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary sm:w-auto"
               >
                 <Download size={16} aria-hidden="true" />
-                Télécharger mon CV
+                {t("home.downloadCv")}
               </a>
             </div>
             
           </div>
         </section>
-        <div className="tech-marquee py-10" aria-label="Technologies ma�tris�es">
+        <div className="tech-marquee py-10" aria-label={t("home.masteredTechnologies")}>
           <div className="tech-marquee__track">
             {[0, 1].map((copy) => (
               <div className="tech-marquee__group" key={copy} aria-hidden={copy === 1}>
@@ -137,22 +128,13 @@ const Index = () => {
           id="services"
           className="arik-shell grid gap-5 py-10 md:grid-cols-3"
         >
-          <ServiceCard index="01" title="Frontend">
-            Interfaces React modernes, responsives et accessibles, pensées pour
-            une expérience fluide.
-          </ServiceCard>
-          <ServiceCard index="02" title="Backend">
-            API robustes avec Django REST et Spring Boot, sécurité, rôles et
-            données PostgreSQL.
-          </ServiceCard>
-          <ServiceCard index="03" title="DevOps & SEO">
-            CI/CD, déploiement cloud, performance, observabilité et optimisation
-            du référencement.
-          </ServiceCard>
+          <ServiceCard index="01" title={t("home.landingServices.frontend.title")}>{t("home.landingServices.frontend.description")}</ServiceCard>
+          <ServiceCard index="02" title={t("home.landingServices.backend.title")}>{t("home.landingServices.backend.description")}</ServiceCard>
+          <ServiceCard index="03" title={t("home.landingServices.devops.title")}>{t("home.landingServices.devops.description")}</ServiceCard>
         </section>
         <section className="arik-shell py-10 sm:py-12">
           <div className="mb-7 flex flex-col items-start justify-between gap-4 sm:mb-10 sm:flex-row sm:items-end">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl">Projets sélectionnés</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl">{t("home.selectedProjects")}</h2>
             <Link
               to="/projects"
               className="flex items-center gap-3 text-xs uppercase tracking-widest"
@@ -160,16 +142,16 @@ const Index = () => {
               <span className="arik-circle">
                 <ArrowUpRight size={15} />
               </span>
-              Tout voir
+              {t("home.viewAll")}
             </Link>
           </div>
           {projectsLoading ? (
             <p role="status" className="arik-panel p-6 text-primary/55">
-              Loading projects...
+              {t("projects.loading")}
             </p>
           ) : projectsError ? (
             <p role="alert" className="arik-panel p-6 text-primary/55">
-              Unable to load projects right now.
+              {t("home.projectLoadError")}
             </p>
           ) : projects.length ? (
             <div className="grid gap-6 md:grid-cols-2">
@@ -179,23 +161,24 @@ const Index = () => {
             </div>
           ) : (
             <p className="arik-panel p-6 text-primary/55">
-              No published projects yet.
+              {t("home.noProjects")}
             </p>
           )}
         </section>
         <section className="py-12 text-center">
-          <p className="arik-label">Le processus</p>
+          <p className="arik-label">{t("home.processLabel")}</p>
           <h2 className="mx-auto mt-5 max-w-4xl text-4xl leading-none md:text-[60px]">
-            Votre produit en <span className="arik-italic">5 étapes</span>
+            {t("home.processTitle")} <span className="arik-italic">{t("home.processAccent")}</span>
           </h2>
           <p className="mx-auto mt-6 max-w-lg leading-7 text-primary/55">
-            Une démarche structurée transforme votre idée en solution
-            fonctionnelle et maintenable.
+            {t("home.processDescription")}
           </p>
         </section>
         <section className="arik-shell relative mx-auto max-w-[1080px] pb-14">
           <div className="absolute bottom-0 left-1/2 top-0 hidden w-px bg-primary/15 md:block" />
-          {process.map((s, i) => (
+          {processKeys.map(({ key }, i) => {
+            const s = t(`home.process.${key}`, { returnObjects: true }) as { tag: string; title: string; text: string };
+            return (
             <article
               key={s.title}
               className={`relative mb-6 grid md:mb-[-30px] md:grid-cols-2 ${i % 2 ? "" : "md:text-right"}`}
@@ -211,7 +194,7 @@ const Index = () => {
                   <p className="mt-5 leading-7 text-primary/55">{s.text}</p>
                   <p className="mt-6 flex items-center gap-3 text-sm">
                     <Check size={14} />
-                    Livrable validé
+                    {t("home.deliverable")}
                   </p>
                 </div>
               </div>
@@ -219,27 +202,27 @@ const Index = () => {
                 0{i + 1}
               </span>
             </article>
-          ))}
+            );
+          })}
         </section>
         <section
           id="contact"
           className="border-y border-primary/15 bg-primary/[.045] px-6 py-14 text-center"
         >
-          <p className="arik-label">Un projet en tête ?</p>
+          <p className="arik-label">{t("home.contactTitle")}</p>
           <h2 className="mx-auto mt-5 max-w-5xl text-4xl leading-none md:text-[60px]">
-            Créons un produit
+            {t("home.contactHeading")}
             <br />
-            <span className="arik-italic">qui se démarque</span>
+            <span className="arik-italic">            {t("home.contactAccent")}</span>
           </h2>
           <p className="mx-auto mt-6 max-w-lg leading-7 text-primary/55">
-            Parlons de votre idée et construisons une solution claire, fiable et
-            performante.
+            {t("home.contactDescription")}
           </p>
           <a
             href="mailto:rahmaniibrahim042@gmail.com"
             className="arik-button mt-6"
           >
-            Me contacter <ArrowUpRight size={16} />
+            {t("home.contactButton")} <ArrowUpRight size={16} />
           </a>
         </section>
       </main>

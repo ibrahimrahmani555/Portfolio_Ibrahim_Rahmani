@@ -8,17 +8,14 @@ import {
   Mail,
   MapPin,
 } from "lucide-react";
+import { Trans, useTranslation } from "react-i18next";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
-const experiences = [
+const experienceMeta = [
   {
-    period: "Juil. – sept. 2026",
-    role: "Stagiaire en développement logiciel",
+    translationKey: "sprintiz",
     company: "Sprintiz",
-    location: "Casablanca",
-    description:
-      "Contribution à 10in, une application mobile sociale dédiée à la communauté du football. Livraison de cinq fonctionnalités clés : authentification par e-mail et OTP, onboarding, gestion des matchs, cercles et profils utilisateurs.",
     stack: [
       ["React Native", "https://cdn.simpleicons.org/react/61DAFB"],
       ["Expo", "https://cdn.simpleicons.org/expo/FFFFFF"],
@@ -27,12 +24,8 @@ const experiences = [
     ],
   },
   {
-    period: "Juil. – août 2025",
-    role: "Stagiaire ingénieur IoT & développement",
+    translationKey: "onee",
     company: "ONEE",
-    location: "Errachidia",
-    description:
-      "Conception d’un prototype IoT basé sur ESP32 pour mesurer en temps réel la consommation d’eau domestique. La solution couvre la collecte, le stockage MySQL, l’analyse Django, la visualisation React et les alertes de surconsommation.",
     stack: [
       ["ESP32", "https://cdn.simpleicons.org/espressif/E7352C"],
       ["MySQL", "https://cdn.simpleicons.org/mysql/4479A1"],
@@ -59,14 +52,14 @@ const skillLogo = (slug: string) => {
 
 const skillGroups = [
   {
-    domain: "Langages",
+    domainKey: "languages",
     skills: [
       ["Java", "java"], ["Python", "python"], ["PHP", "php"], ["JavaScript", "javascript"],
       ["TypeScript", "typescript"], ["C++", "cplusplus"], ["SQL"],
     ],
   },
   {
-    domain: "Web & mobile",
+    domainKey: "webMobile",
     skills: [
       ["Spring Boot", "spring"], ["Django", "django"], ["Node.js", "nodedotjs"], ["Hono", "hono"],
       ["tRPC", "trpc"], ["React", "react"], ["Angular", "angular"], ["React Native", "react"],
@@ -74,14 +67,14 @@ const skillGroups = [
     ],
   },
   {
-    domain: "Données & architecture",
+    domainKey: "dataArchitecture",
     skills: [
       ["MySQL", "mysql"], ["MongoDB", "mongodb"], ["Oracle", "oracle"], ["PL/SQL", "oracle"],
-      ["Hadoop", "apachehadoop"], ["Spark", "apachespark"], ["Microservices"], ["SOA"], ["Systèmes distribués"],
+      ["Hadoop", "apachehadoop"], ["Spark", "apachespark"], ["Microservices"], ["SOA"], ["distributedSystems"],
     ],
   },
   {
-    domain: "DevOps & qualité",
+    domainKey: "devops",
     skills: [
       ["Git", "git"], ["Docker", "docker"], ["Kubernetes", "kubernetes"], ["CI/CD"],
       ["GitHub Actions", "githubactions"], ["AWS", "aws"], ["Cloudflare Workers", "cloudflare"],
@@ -89,15 +82,15 @@ const skillGroups = [
     ],
   },
   {
-    domain: "IoT",
+    domainKey: "iot",
     skills: [
-      ["ESP32", "espressif"], ["Capteurs"], ["Intégration matériel-logiciel"],
+      ["ESP32", "espressif"], ["sensors"], ["hardwareSoftware"],
     ],
   },
   {
-    domain: "Soft skills",
+    domainKey: "softSkills",
     skills: [
-      ["Agile / Scrum"], ["Design Thinking"], ["Résolution de problèmes"], ["Travail d’équipe"],
+      ["Agile / Scrum"], ["Design Thinking"], ["problemSolving"], ["teamwork"],
     ],
   },
 ];
@@ -120,7 +113,14 @@ const galleryLayouts = [
   "bottom-10 left-[8%] z-40 w-[42%] rotate-[-2deg]",
 ];
 
-const About = () => (
+const About = () => {
+  const { t } = useTranslation();
+  const experiences = experienceMeta.map((experience) => ({
+    ...experience,
+    ...t(`about.page.experiences.${experience.translationKey}`, { returnObjects: true }) as { period: string; role: string; location: string; description: string },
+  }));
+
+  return (
   <div className="min-h-screen rounded-sm">
     <Navigation />
     <main id="main-content" tabIndex={-1}>
@@ -129,7 +129,7 @@ const About = () => (
           <div className="absolute inset-0 z-10 rounded-sm bg-gradient-to-b from-transparent via-transparent to-background" />
           <img
             src={`${import.meta.env.BASE_URL}ibrahim-arik-portrait.png`}
-            alt="Portrait d’Ibrahim Rahmani"
+            alt={t("about.page.portraitAlt")}
             className="h-full w-full object-cover object-[center_20%]"
           />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-24 rounded-sm bg-gradient-to-t from-background/90 via-background/35 to-transparent" />
@@ -138,7 +138,7 @@ const About = () => (
               {[0, 1].map((group) => (
                 <div key={group} className="tech-marquee__group rounded-sm">
                   {Array.from({ length: 3 }, (_, index) => (
-                    <span key={index}>Recherche d’un stage de fin d’études (PFE) </span>
+                    <span key={index}>{t("about.page.internshipBanner")} </span>
                   ))}
                 </div>
               ))}
@@ -152,63 +152,42 @@ const About = () => (
               Ibrahim <span className="arik-italic"> Rahmani</span>
             </h1>
             <p className="mt-7 max-w-2xl text-xl leading-8 text-primary/70">
-              Développeur Full Stack & IoT <span className="text-primary/35">|</span> Élève ingénieur en Génie Informatique
+              {t("about.page.role")} <span className="text-primary/35">|</span> {t("about.page.student")}
             </p>
             <p className="mt-4 max-w-xl text-lg leading-8 text-primary/50">
-              Je conçois des solutions fiables, du capteur à l’interface web et mobile.
+              {t("about.page.tagline")}
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-3 rounded-sm text-xs uppercase tracking-[.14em] text-primary/65">
-              <span className="inline-flex items-center gap-2"><MapPin size={14} /> Casablanca, Maroc</span>
+              <span className="inline-flex items-center gap-2"><MapPin size={14} /> {t("about.page.location")}</span>
             </div>
             <a href="#about-me" className="mt-8 inline-flex items-center gap-4 text-[11px] uppercase tracking-[.16em]">
               <span className="arik-circle h-[46px] w-[46px]"><ArrowDown size={17} /></span>
-              Découvrir mon parcours
+              {t("about.page.discover")}
             </a>
           </header>
 
           <div id="about-me" className="space-y-10 rounded-sm">
             <section className="border-t border-primary/15 pt-8">
-              <p className="arik-label">À propos de moi</p>
-              <h2 className="mt-4 max-w-3xl text-3xl leading-tight md:text-4xl">
-                Transformer un besoin en produit qui fonctionne vraiment.
-              </h2>
+              <p className="arik-label">{t("about.heading")}</p>
+              <h2 className="mt-4 max-w-3xl text-3xl leading-tight md:text-4xl">{t("about.page.introTitle")}</h2>
               <div className="mt-6 max-w-3xl space-y-5 rounded-sm text-base leading-8 text-primary/60 md:text-lg">
                 <p>
-                  Je m’appelle Ibrahim Rahmani, élève ingénieur en Génie Informatique à l’ENSA de Khouribga, spécialisé en Ingénierie des Systèmes et Technologies Avancées du Logiciel. Je suis développeur Full Stack et IoT, basé à Casablanca.
+                  {t("about.page.intro")}
                 </p>
                 <p>
-                  Je prends en charge toutes les étapes d’un projet : analyse des besoins, conception, développement web, mobile et backend, puis déploiement. Je travaille surtout avec React, Spring Boot et Django, et j’aime relier le monde physique au logiciel avec des projets IoT : ESP32, capteurs et collecte de données en temps réel.
+                  {t("about.page.approach")}
                 </p>
                 <p>
-                  Je suis actuellement à la recherche d’un <strong className="font-medium text-primary">stage de fin d’études (PFE)</strong> pour concevoir des solutions utiles, robustes et durables. En dehors du code, mon expérience de Responsable Design & Média du club JLM ENSA a renforcé mon sens de la communication et du travail en équipe.
+                  <Trans i18nKey="about.page.goal" components={{ strong: <strong className="font-medium text-primary" /> }} />
                 </p>
               </div>
             </section>
 
-            <section className="border-t border-primary/15 pt-8">
-              <div className="flex items-center justify-between gap-4 rounded-sm">
-                <p className="arik-label">Galerie</p>
-              </div>
-              <div className="relative mt-6 h-[430px] overflow-hidden rounded-sm bg-primary/[.025] sm:h-[520px]">
-                {galleryImages.map((filename, index) => (
-                  <figure
-                    key={filename}
-                    className={`group absolute overflow-hidden rounded-sm bg-card shadow-xl shadow-black/30 transition duration-500 hover:z-[60] hover:scale-[1.03] ${galleryLayouts[index]}`}
-                  >
-                    <img
-                      src={`${import.meta.env.BASE_URL}${filename}`}
-                      alt=""
-                      loading="lazy"
-                      className="block h-auto w-full opacity-75 grayscale transition duration-500 group-hover:opacity-100 group-hover:grayscale-0"
-                    />
-                  </figure>
-                ))}
-              </div>
-            </section>
+            
 
             <section className="border-t border-primary/15 pt-8">
               <div className="flex items-center justify-between gap-4 rounded-sm">
-                <p className="arik-label">Parcours professionnel</p>
+                <p className="arik-label">{t("about.page.experience")}</p>
                 <BriefcaseBusiness className="h-5 w-5 text-primary/45" />
               </div>
               <div className="mt-6 space-y-4 rounded-sm">
@@ -248,11 +227,11 @@ const About = () => (
             </section>
 
             <section className="border-t border-primary/15 pt-8">
-              <p className="arik-label">Compétences</p>
+              <p className="arik-label">{t("about.page.skills")}</p>
               <div className="mt-6 overflow-hidden rounded-sm border border-primary/15">
-                {skillGroups.map(({ domain, skills }) => (
-                  <div key={domain} className="grid gap-2 rounded-sm border-b border-primary/15 p-4 last:border-0 md:grid-cols-[180px_1fr] md:gap-6 md:p-5">
-                    <h3 className="text-sm uppercase tracking-[.12em] text-primary">{domain}</h3>
+                {skillGroups.map(({ domainKey, skills }) => (
+                  <div key={domainKey} className="grid gap-2 rounded-sm border-b border-primary/15 p-4 last:border-0 md:grid-cols-[180px_1fr] md:gap-6 md:p-5">
+                    <h3 className="text-sm uppercase tracking-[.12em] text-primary">{t(`about.page.domains.${domainKey}`)}</h3>
                     <div className="flex flex-wrap gap-2 rounded-sm">
                       {skills.map(([technology, logo]) => (
                         <span
@@ -269,7 +248,9 @@ const About = () => (
                               }}
                             />
                           )}
-                          {technology}
+                          {["sensors", "hardwareSoftware", "distributedSystems", "problemSolving", "teamwork"].includes(technology)
+                            ? t(`about.page.skillLabels.${technology}`)
+                            : technology}
                         </span>
                       ))}
                     </div>
@@ -279,24 +260,45 @@ const About = () => (
             </section>
 
             <section className="border-t border-primary/15 pt-8">
-              <p className="arik-label">Formation</p>
+              <p className="arik-label">{t("about.page.education")}</p>
               <div className="mt-6 space-y-4 rounded-sm">
                 <article className="flex gap-4 rounded-2xl border border-primary/15 bg-primary/[.04] p-5">
                   <GraduationCap className="mt-1 h-5 w-5 shrink-0 text-primary/60" />
                   <div>
-                    <h3 className="text-lg text-primary">Cycle Ingénieur en Génie Informatique</h3>
-                    <p className="mt-1 text-sm text-primary/55">ENSA Khouribga <span className="text-primary/25">·</span> 2024 – présent</p>
-                    <p className="mt-3 text-sm leading-6 text-primary/55">Spécialisation en Ingénierie des Systèmes et Technologies Avancées du Logiciel.</p>
+                    <h3 className="text-lg text-primary">{t("about.page.engineeringDegree")}</h3>
+                    <p className="mt-1 text-sm text-primary/55">ENSA Khouribga <span className="text-primary/25">·</span> {t("about.page.engineeringPeriod")}</p>
+                    <p className="mt-3 text-sm leading-6 text-primary/55">{t("about.page.engineeringDescription")}</p>
                   </div>
                 </article>
                 <article className="flex gap-4 rounded-2xl border border-primary/15 bg-primary/[.04] p-5">
                   <GraduationCap className="mt-1 h-5 w-5 shrink-0 text-primary/60" />
                   <div>
-                    <h3 className="text-lg text-primary">DEUST, filière MIP</h3>
-                    <p className="mt-1 text-sm text-primary/55">FST Errachidia <span className="text-primary/25">·</span> 2022 – 2024</p>
-                    <p className="mt-3 text-sm leading-6 text-primary/55">Mathématiques, Informatique, Physique.</p>
+                    <h3 className="text-lg text-primary">{t("about.page.deust")}</h3>
+                    <p className="mt-1 text-sm text-primary/55">FST Errachidia <span className="text-primary/25">·</span> {t("about.page.deustPeriod")}</p>
+                    <p className="mt-3 text-sm leading-6 text-primary/55">{t("about.page.deustDescription")}</p>
                   </div>
                 </article>
+              </div>
+            </section>
+
+            <section className="border-t border-primary/15 pt-8">
+              <div className="flex items-center justify-between gap-4 rounded-sm">
+                <p className="arik-label">{t("about.page.gallery")}</p>
+              </div>
+              <div className="relative mt-6 h-[430px] overflow-hidden rounded-sm bg-primary/[.025] sm:h-[520px]">
+                {galleryImages.map((filename, index) => (
+                  <figure
+                    key={filename}
+                    className={`group absolute overflow-hidden rounded-sm bg-card shadow-xl shadow-black/30 transition duration-500 hover:z-[60] hover:scale-[1.03] ${galleryLayouts[index]}`}
+                  >
+                    <img
+                      src={`${import.meta.env.BASE_URL}${filename}`}
+                      alt={t("about.galleryAlt", { count: index + 1 })}
+                      loading="lazy"
+                      className="block h-auto w-full opacity-75 grayscale transition duration-500 group-hover:opacity-100 group-hover:grayscale-0"
+                    />
+                  </figure>
+                ))}
               </div>
             </section>
 
@@ -312,7 +314,7 @@ const About = () => (
                     <span className="flex items-center gap-3"><SocialIcon size={15} />{label as string}</span>
                     <ArrowUpRight size={14} />
                   </a>
-                );
+                  );
               })}
             </div>
           </div>
@@ -328,6 +330,7 @@ const About = () => (
     </main>
     <Footer />
   </div>
-);
+  );
+};
 
 export default About;
