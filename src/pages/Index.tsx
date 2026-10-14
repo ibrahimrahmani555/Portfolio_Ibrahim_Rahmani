@@ -34,19 +34,30 @@ const process = [
 ];
 const Index = () => {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [projectsLoading, setProjectsLoading] = useState(true);
+  const [projectsError, setProjectsError] = useState(false);
   useEffect(() => {
     const c = new AbortController();
+    setProjectsLoading(true);
     getProjects(c.signal)
-      .then(setProjects)
-      .catch(() => undefined);
+      .then((data) => {
+        setProjects(data);
+        setProjectsError(false);
+      })
+      .catch((error: unknown) => {
+        if (!(error instanceof DOMException && error.name === "AbortError")) {
+          setProjectsError(true);
+        }
+      })
+      .finally(() => setProjectsLoading(false));
     return () => c.abort();
   }, []);
   return (
     <div id="top" className="min-h-screen">
       <Navigation />
       <main id="main-content">
-        <section className="relative flex min-h-[680px] flex-col items-center justify-end overflow-hidden px-6 pb-10 pt-36 text-center">
-          <div className="absolute top-5 h-[360px] w-[min(420px,78vw)] overflow-hidden mix-blend-lighten">
+        <section className="relative flex min-h-[640px] flex-col items-center justify-end overflow-hidden px-5 pb-10 pt-32 text-center sm:min-h-[680px] sm:px-6 sm:pt-36">
+          <div className="absolute top-8 h-[300px] w-[min(360px,90vw)] overflow-hidden mix-blend-lighten sm:top-5 sm:h-[360px] sm:w-[min(420px,78vw)]">
             <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-background" />
             <img
               src={`${import.meta.env.BASE_URL}ibrahim-arik-portrait.png`}
@@ -55,17 +66,17 @@ const Index = () => {
               className="mx-auto h-full w-full object-cover object-[center_22%] contrast-110"
             />
           </div>
-          <div className="relative z-10 max-w-[1050px]">
-            <h1 className="text-[clamp(32px,5.5vw,76px)] font-light leading-[.86] tracking-[-.05em]">
+          <div className="relative z-10 w-full max-w-[1050px]">
+            <h1 className="text-[clamp(30px,8vw,54px)] font-light leading-[.92] tracking-[-.05em] md:text-[clamp(32px,5.5vw,76px)] md:leading-[.86]">
               Full Stack Developer
               <br />
               <span className="arik-italic">& Software Engineer</span>
             </h1>
-            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-primary/55">
+            <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-primary/55 sm:mt-6 sm:text-lg sm:leading-8">
               Développement web, mobile, backend et DevOps pour créer des
               produits numériques utiles, rapides et durables.
             </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="mt-6 flex w-full flex-col items-center justify-center gap-3 sm:mt-8 sm:flex-row sm:gap-4">
               <Link
                 to="/about"
                 className="arik-button min-h-12 w-full gap-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary sm:w-auto"
@@ -121,7 +132,8 @@ const Index = () => {
               </div>
             ))}
           </div>
-        </div>        <section
+        </div>
+        <section
           id="services"
           className="arik-shell grid gap-5 py-10 md:grid-cols-3"
         >
@@ -138,9 +150,9 @@ const Index = () => {
             du référencement.
           </ServiceCard>
         </section>
-        <section className="arik-shell py-12">
-          <div className="mb-10 flex items-end justify-between">
-            <h2 className="text-4xl md:text-5xl">Projets sélectionnés</h2>
+        <section className="arik-shell py-10 sm:py-12">
+          <div className="mb-7 flex flex-col items-start justify-between gap-4 sm:mb-10 sm:flex-row sm:items-end">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl">Projets sélectionnés</h2>
             <Link
               to="/projects"
               className="flex items-center gap-3 text-xs uppercase tracking-widest"
@@ -151,7 +163,15 @@ const Index = () => {
               Tout voir
             </Link>
           </div>
-          {projects.length ? (
+          {projectsLoading ? (
+            <p role="status" className="arik-panel p-6 text-primary/55">
+              Loading projects...
+            </p>
+          ) : projectsError ? (
+            <p role="alert" className="arik-panel p-6 text-primary/55">
+              Unable to load projects right now.
+            </p>
+          ) : projects.length ? (
             <div className="grid gap-6 md:grid-cols-2">
               {projects.slice(0, 2).map((p) => (
                 <ProjectTile key={p.id} project={p} />
@@ -159,7 +179,7 @@ const Index = () => {
             </div>
           ) : (
             <p className="arik-panel p-6 text-primary/55">
-              Chargement des projets depuis l’API…
+              No published projects yet.
             </p>
           )}
         </section>
@@ -178,12 +198,12 @@ const Index = () => {
           {process.map((s, i) => (
             <article
               key={s.title}
-              className={`relative mb-[-30px] grid md:grid-cols-2 ${i % 2 ? "" : "md:text-right"}`}
+              className={`relative mb-6 grid md:mb-[-30px] md:grid-cols-2 ${i % 2 ? "" : "md:text-right"}`}
             >
               <div
                 className={`${i % 2 ? "md:col-start-2 md:pl-20" : "md:pr-20"}`}
               >
-                <div className="arik-panel p-6">
+                <div className="arik-panel p-5 sm:p-6">
                   <span className="arik-label">{s.tag}</span>
                   <h3 className="mt-2 text-xl uppercase tracking-wide">
                     {s.title}

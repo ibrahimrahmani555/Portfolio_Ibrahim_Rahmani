@@ -67,12 +67,7 @@ const Posts = () => {
           </div>
         </header>
 
-        <section className="border-y border-primary/15 bg-primary/[.04]">
-          <div className="arik-shell grid gap-8 py-12 md:grid-cols-[1fr_2fr]">
-            <h2 className="text-4xl md:text-5xl">Mes publications</h2>
-            <div className="space-y-8 text-lg leading-8 text-primary/60"><p>Je partage ici des analyses techniques, des choix d’architecture et les enseignements tirés de mes projets web, mobile, backend et DevOps.</p><p>Chaque article privilégie des explications concrètes, des exemples réutilisables et une approche orientée qualité logicielle.</p></div>
-          </div>
-        </section>
+      
 
         {loading && <p role="status" className="mt-10 text-center text-primary/45">{t("posts.loading")}</p>}
         {error && !loading && <p role="alert" className="mt-10 text-center text-red-400">{t("posts.error")}</p>}
