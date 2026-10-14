@@ -1,5 +1,3 @@
-import base64
-
 from rest_framework import serializers
 
 from .models import Category, Post, Project
@@ -10,13 +8,6 @@ def translated_value(instance, field_name, fallback):
     if translations:
         return getattr(translations[0], field_name)
     return fallback
-
-
-def database_image_as_data_url(binary_value, mime_type):
-    if not binary_value:
-        return ""
-    encoded = base64.b64encode(bytes(binary_value)).decode("ascii")
-    return f"data:{mime_type or 'application/octet-stream'};base64,{encoded}"
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -54,7 +45,9 @@ class ProjectSerializer(serializers.ModelSerializer):
         return translated_value(obj, "description", obj.description)
 
     def get_image_url(self, obj):
-        return database_image_as_data_url(obj.image_data, obj.image_mime_type)
+        request = self.context.get("request")
+        url = f"/api/projects/{obj.slug}/image/"
+        return request.build_absolute_uri(url) if request else url
 
 
 class PostListSerializer(serializers.ModelSerializer):
@@ -82,7 +75,9 @@ class PostListSerializer(serializers.ModelSerializer):
         return translated_value(obj.category, "name", obj.category.name)
 
     def get_cover_image_url(self, obj):
-        return database_image_as_data_url(obj.cover_image_data, obj.cover_image_mime_type)
+        request = self.context.get("request")
+        url = f"/api/posts/{obj.slug}/image/"
+        return request.build_absolute_uri(url) if request else url
 
 
 class PostDetailSerializer(PostListSerializer):

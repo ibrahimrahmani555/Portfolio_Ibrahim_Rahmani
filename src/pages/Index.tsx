@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { ArrowDown, ArrowUpRight, Check, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
@@ -84,38 +84,44 @@ const Index = () => {
             
           </div>
         </section>
-        <div className="arik-shell grid grid-cols-2 gap-x-6 gap-y-10 py-10 text-center text-sm uppercase tracking-[.2em] text-primary/45 sm:grid-cols-3 md:grid-cols-6">
-          {[
-            "React",
-            "Django",
-            "Spring",
-            "TypeScript",
-            "Docker",
-            "PostgreSQL",
-          ].map((technology) => (
-            <div
-              key={technology}
-              className="flex flex-col items-center gap-4 transition-colors hover:text-primary/80"
-            >
-              <span
-                aria-hidden="true"
-                className="block h-9 w-9 shrink-0 bg-current"
-                style={{
-                  maskImage: `url(${import.meta.env.BASE_URL}logos/${technology.toLowerCase()}.svg)`,
-                  WebkitMaskImage: `url(${import.meta.env.BASE_URL}logos/${technology.toLowerCase()}.svg)`,
-                  maskSize: "contain",
-                  WebkitMaskSize: "contain",
-                  maskRepeat: "no-repeat",
-                  WebkitMaskRepeat: "no-repeat",
-                  maskPosition: "center",
-                  WebkitMaskPosition: "center",
-                }}
-              />
-              <span>{technology}</span>
-            </div>
-          ))}
-        </div>
-        <section
+        <div className="tech-marquee py-10" aria-label="Technologies ma�tris�es">
+          <div className="tech-marquee__track">
+            {[0, 1].map((copy) => (
+              <div className="tech-marquee__group" key={copy} aria-hidden={copy === 1}>
+                {[
+                  "React",
+                  "Django",
+                  "Spring",
+                  "TypeScript",
+                  "Docker",
+                  "PostgreSQL",
+                  "Jenkins",
+                ].map((technology) => (
+                  <div
+                    key={technology}
+                    className="flex min-w-[150px] flex-col items-center gap-4 text-primary/45 transition-colors hover:text-primary/80"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="block h-9 w-9 shrink-0 bg-current"
+                      style={{
+                        maskImage: `url(${import.meta.env.BASE_URL}logos/${technology.toLowerCase()}.svg)`,
+                        WebkitMaskImage: `url(${import.meta.env.BASE_URL}logos/${technology.toLowerCase()}.svg)`,
+                        maskSize: "contain",
+                        WebkitMaskSize: "contain",
+                        maskRepeat: "no-repeat",
+                        WebkitMaskRepeat: "no-repeat",
+                        maskPosition: "center",
+                        WebkitMaskPosition: "center",
+                      }}
+                    />
+                    <span>{technology}</span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>        <section
           id="services"
           className="arik-shell grid gap-5 py-10 md:grid-cols-3"
         >
