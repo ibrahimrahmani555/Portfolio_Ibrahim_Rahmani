@@ -12,12 +12,13 @@ const Navigation = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const lang = i18n.resolvedLanguage?.startsWith("en") ? "en" : "fr";
   const links = [
-    ["Blog", "/posts"],
-    ["Projets", "/projects"],
-    ["À propos", "/about"],
+    [t("navigation.home"), "/"],
+    [t("navigation.posts"), "/posts"],
+    [t("navigation.projects"), "/projects"],
+    [t("navigation.about"), "/about"],
   ];
 
   useEffect(() => {
