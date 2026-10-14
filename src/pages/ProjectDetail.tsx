@@ -10,6 +10,53 @@ import { getProject, type Project } from "@/lib/api";
 import Seo from "@/components/Seo";
 import { SITE_URL } from "@/lib/seo";
 
+/** Renders the small, semantic HTML subset used for project descriptions. */
+const ProjectDescription = ({ content }: { content: string }) => {
+  const markup = new DOMParser().parseFromString(content, "text/html");
+  const allowedTags = new Set(["H1", "H2", "P", "SECTION", "UL", "OL", "LI", "STRONG", "EM", "BR"]);
+
+  const renderNode = (node: ChildNode, key: string): React.ReactNode => {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (!(node instanceof HTMLElement) || !allowedTags.has(node.tagName)) {
+      return Array.from(node.childNodes).map((child, index) => renderNode(child, `${key}-${index}`));
+    }
+
+    const children = Array.from(node.childNodes).map((child, index) => renderNode(child, `${key}-${index}`));
+    const className = node.tagName === "H1"
+      ? "font-display text-3xl font-bold leading-tight text-foreground md:text-4xl"
+      : node.tagName === "H2"
+        ? "font-display text-xl font-semibold text-foreground"
+        : node.tagName === "P"
+          ? "text-base leading-7 text-muted-foreground"
+          : node.tagName === "UL" || node.tagName === "OL"
+            ? "list-inside space-y-3 pl-1 text-base leading-7 text-muted-foreground"
+            : node.tagName === "LI"
+              ? "list-item"
+              : undefined;
+
+    switch (node.tagName) {
+      case "H1": return <h2 key={key} className={className}>{children}</h2>;
+      case "H2": return <h3 key={key} className={className}>{children}</h3>;
+      case "P": return <p key={key} className={className}>{children}</p>;
+      case "SECTION": return <section key={key} className="space-y-4">{children}</section>;
+      case "UL": return <ul key={key} className={`list-disc ${className}`}>{children}</ul>;
+      case "OL": return <ol key={key} className={`list-decimal ${className}`}>{children}</ol>;
+      case "LI": return <li key={key} className={className}>{children}</li>;
+      case "STRONG": return <strong key={key} className="font-semibold text-foreground">{children}</strong>;
+      case "EM": return <em key={key}>{children}</em>;
+      case "BR": return <br key={key} />;
+      default: return children;
+    }
+  };
+
+  const hasHtml = /<\/?[a-z][\s\S]*?>/i.test(content);
+  if (!hasHtml) {
+    return <p className="text-lg leading-8 text-muted-foreground whitespace-pre-line">{content}</p>;
+  }
+
+  return <div className="space-y-6">{Array.from(markup.body.childNodes).map((node, index) => renderNode(node, `description-${index}`))}</div>;
+};
+
 const ProjectDetail = () => {
   const { slug = "" } = useParams();
   const { t, i18n } = useTranslation();
@@ -91,9 +138,7 @@ const ProjectDetail = () => {
                     </h1>
                   </div>
 
-                  <p className="text-lg leading-8 text-muted-foreground whitespace-pre-line">
-                    {project.description || project.short_description}
-                  </p>
+                  <ProjectDescription content={project.description || project.short_description} />
 
                   {project.technologies.length > 0 && (
                     <div>
