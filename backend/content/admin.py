@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+from .forms import PostAdminForm, ProjectAdminForm
+
 from .models import (
     Category,
     CategoryTranslation,
@@ -8,7 +10,6 @@ from .models import (
     Project,
     ProjectTranslation,
 )
-from .forms import PostAdminForm, ProjectAdminForm
 
 
 class CategoryTranslationInline(admin.TabularInline):
@@ -41,12 +42,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProjectAdmin(admin.ModelAdmin):
     form = ProjectAdminForm
     list_display = (
-        "title",
-        "has_database_image",
-        "published",
-        "featured",
-        "order",
-        "updated_at",
+        "title", "has_database_image", "published", "featured", "order", "updated_at",
     )
     list_filter = ("published", "featured")
     list_editable = ("published", "featured", "order")
@@ -66,13 +62,7 @@ class ProjectAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     form = PostAdminForm
     list_display = (
-        "title",
-        "has_database_image",
-        "status",
-        "featured",
-        "category",
-        "published_at",
-        "updated_at",
+        "title", "has_database_image", "status", "featured", "category", "published_at", "updated_at",
     )
     list_filter = ("status", "featured", "category")
     list_editable = ("status", "featured")

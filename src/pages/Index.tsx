@@ -1,394 +1,233 @@
+﻿import { useEffect, useState } from "react";
+import { ArrowDown, ArrowUpRight, Check, Download } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
-import { ArrowRight, Smartphone, Server, Cpu, Star, Quote, ExternalLink, Download, Mail, MapPin } from "lucide-react";
-import { Link } from "react-router-dom";
-import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
-import { motion, AnimatePresence } from "framer-motion"; // Importation pour les animations
-import { useTranslation } from "react-i18next";
-
+import { ProjectTile, ServiceCard } from "@/components/ArikUI";
+import { getProjects, type Project } from "@/lib/api";
+const processKeys = [
+  {
+    key: "discovery",
+  },
+  {
+    key: "strategy",
+  },
+  {
+    key: "creation",
+  },
+  {
+    key: "development",
+  },
+  {
+    key: "quality",
+  },
+];
 const Index = () => {
-  const { toast } = useToast();
   const { t } = useTranslation();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast({
-        title: t("home.contactSuccess"),
-        description: t("home.contactSuccessDescription"),
-      });
-    }, 1500);
-  };
-
-  // --- Configuration des variants d'animation ---
-  const fadeInUp = {
-    initial: { opacity: 0, y: 30 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
-    transition: { duration: 0.8, ease: "easeOut" }
-  };
-
-  const staggerContainer = {
-    initial: {},
-    whileInView: { transition: { staggerChildren: 0.15 } },
-    viewport: { once: true }
-  };
-
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [projectsLoading, setProjectsLoading] = useState(true);
+  const [projectsError, setProjectsError] = useState(false);
+  useEffect(() => {
+    const c = new AbortController();
+    setProjectsLoading(true);
+    getProjects(c.signal)
+      .then((data) => {
+        setProjects(data);
+        setProjectsError(false);
+      })
+      .catch((error: unknown) => {
+        if (!(error instanceof DOMException && error.name === "AbortError")) {
+          setProjectsError(true);
+        }
+      })
+      .finally(() => setProjectsLoading(false));
+    return () => c.abort();
+  }, []);
   return (
-    <AnimatePresence>
-      <motion.div 
-      initial={{ opacity: 0 }} 
-      animate={{ opacity: 1 }} 
-      exit={{ opacity: 0 }}
-      className="min-h-screen bg-background selection:bg-primary/20"
-      >
+    <div id="top" className="min-h-screen">
       <Navigation />
-      
-      <main id="main-content" tabIndex={-1}>
-        {/* --- HERO SECTION --- */}
-        <section className="relative pt-32 pb-20 md:pt-24 md:pb-24 overflow-hidden bg-cover bg-center ">
-        <div className="absolute top-0 left-0 w-full h-full bg-black/50 -z-10" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10">
-          <motion.div 
-          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity }}
-          className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/10 blur-[120px]" 
-          />
-          <motion.div 
-          animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }}
-          transition={{ duration: 8, repeat: Infinity }}
-          className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-accent/10 blur-[120px]" 
-          />
-        </div>
-
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-[minmax(0,1fr)_320px] gap-10 items-center">
-          <div className="text-center lg:text-left">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight leading-[1.05]"
-          >
-            {t("home.heroTitle")} <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">{t("home.heroAccent")}</span>
-          </motion.h1>
-          
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
-          >
-            {t("home.heroDescription")}
-          </motion.p>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center"
-          >
-            <Button asChild size="lg" className="h-12 px-8 rounded-full group transition-transform hover:scale-105 active:scale-95">
-            <Link to="/about">
-              {t("home.journey")}
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            </Button>
-            <Button asChild variant="ghost" size="lg" className="h-12 px-8 rounded-full border border-white/10 hover:bg-white/5 transition-transform hover:scale-105 active:scale-95">
-            <a href={`${import.meta.env.BASE_URL}CV_PFE.pdf`} download="CV_Ibrahim_Rahmani.pdf" className="flex items-center">
-              <Download className="mr-2 h-4 w-4 text-primary" />
-              {t("home.downloadCv")}
-            </a>
-            </Button>
-          </motion.div>
-          </div>
-          <motion.figure
-            initial={{ opacity: 0, scale: 0.94 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="mx-auto w-full max-w-[280px] lg:max-w-[320px] overflow-hidden rounded-[2rem] border border-white/10 bg-card shadow-2xl"
-          >
+      <main id="main-content">
+        <section className="relative flex min-h-[640px] flex-col items-center justify-end overflow-hidden px-5 pb-10 pt-32 text-center sm:min-h-[680px] sm:px-6 sm:pt-36">
+          <div className="absolute top-8 h-[300px] w-[min(360px,90vw)] overflow-hidden mix-blend-lighten sm:top-5 sm:h-[360px] sm:w-[min(420px,78vw)]">
+            <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-background" />
             <img
-              src={`${import.meta.env.BASE_URL}image 1.png`}
-              alt="Portrait de Rahmani Ibrahim, développeur Full Stack"
-              width="586"
-              height="808"
-              loading="eager"
+              src={`${import.meta.env.BASE_URL}ibrahim-arik-portrait.png`}
+              alt={t("about.page.portraitAlt")}
               fetchPriority="high"
-              className="aspect-[4/5] h-full w-full object-cover object-top"
+              className="mx-auto h-full w-full object-cover object-[center_22%] contrast-110"
             />
-          </motion.figure>
           </div>
-        </div>
-        </section>
-
-        {/* --- FEATURED PROJECTS --- */}
-        <motion.section 
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="py-24 px-4"
-        >
-        <div className="container mx-auto max-w-7xl">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-          <div>
-            <Badge className="mb-4" variant="outline">{t("home.portfolio")}</Badge>
-            <h2 className="font-display text-4xl md:text-5xl font-bold">{t("home.selectedProjects")}</h2>
-          </div>
-          <Button variant="link" asChild className="text-primary p-0 h-auto group">
-            <Link to="/projects" className="flex items-center gap-2">
-            {t("home.allProjects")} <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
-          </div>
-
-          <motion.div 
-          variants={staggerContainer}
-          initial="initial"
-          whileInView="whileInView"
-          viewport={{ once: true }}
-          className="grid md:grid-cols-2 gap-8"
-          >
-          {[
-            { title: t("home.featured.ecommerce"), category: "PHP • Laravel • JavaScript • SQL", image: "https://images.unsplash.com/photo-1557821552-17105176677c?w=800&h=600&fit=crop" },
-            { title: t("home.featured.iot"), category: "React • Python • Django • MySQL • C++ • ESP32", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop" }
-          ].map((project, i) => (
-            <motion.div 
-            key={i}
-            variants={fadeInUp}
-            whileHover={{ y: -10 }}
-            className="group relative overflow-hidden rounded-3xl border border-border bg-card transition-all duration-300 shadow-sm hover:shadow-xl"
-            >
-            <div className="aspect-[16/10] overflow-hidden">
-              <img src={project.image} alt={project.title} className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110" />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-80" />
-            <div className="absolute bottom-0 left-0 p-8 w-full translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-              <p className="text-sm font-medium text-primary mb-2">{project.category}</p>
-              <h3 className="text-2xl font-bold mb-4">{project.title}</h3>
-              <div className="flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <Button size="icon" variant="secondary" aria-label={`Ajouter ${project.title} aux favoris`} className="rounded-full w-10 h-10 hover:scale-110 transition-transform"><Star className="h-4 w-4" aria-hidden="true" /></Button>
-              <Button size="icon" variant="secondary" aria-label={`Ouvrir ${project.title}`} className="rounded-full w-10 h-10 hover:scale-110 transition-transform"><ExternalLink className="h-4 w-4" aria-hidden="true" /></Button>
-              </div>
-            </div>
-            </motion.div>
-          ))}
-          </motion.div>
-        </div>
-        </motion.section>
-
-        {/* --- SERVICES --- */}
-        <motion.section 
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="py-24 px-4 bg-secondary/30 relative"
-        >
-        <div className="container mx-auto max-w-7xl">
-          <div className="text-center mb-16">
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="font-display text-4xl md:text-5xl font-bold mb-4"
-          >
-            {t("home.servicesTitle")}
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-muted-foreground text-lg max-w-2xl mx-auto"
-          >
-            {t("home.servicesDescription")}
-          </motion.p>
-          </div>
-
-          <motion.div 
-          variants={staggerContainer}
-          initial="initial"
-          whileInView="whileInView"
-          viewport={{ once: true }}
-          className="grid md:grid-cols-3 gap-6"
-          >
-          {[
-            { icon: Smartphone, title: t("home.services.web.title"), desc: t("home.services.web.description") },
-            { icon: Server, title: t("home.services.backend.title"), desc: t("home.services.backend.description") },
-            { icon: Cpu, title: t("home.services.iot.title"), desc: t("home.services.iot.description") }
-          ].map((s, i) => (
-            <motion.div key={i} variants={fadeInUp}>
-            <Card className="p-8 border-none bg-background shadow-sm hover:shadow-md transition-all hover:-translate-y-2 group">
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-black transition-colors">
-              <s.icon className="h-6 w-6" />
-              </div>
-              <h3 className="text-xl font-bold mb-3">{s.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{s.desc}</p>
-            </Card>
-            </motion.div>
-          ))}
-          </motion.div>
-        </div>
-        </motion.section>
-
-        {/* --- TECH STACK --- */}
-        <section className="py-20 overflow-hidden opacity-70 relative">
-        <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent z-10" />
-        <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent z-10" />
-
-        <div className="flex overflow-hidden">
-          <motion.div 
-          animate={{ 
-            x: [0, "-50%"]
-          }}
-          transition={{ 
-            duration: 20,
-            ease: "linear", 
-            repeat: Infinity 
-          }}
-          className="flex flex-nowrap gap-8 md:gap-16 items-center whitespace-nowrap"
-          >
-          {[...Array(2)].map((_, index) => (
-            <React.Fragment key={index}>
-            {["React", "React Native", "TypeScript", "Expo", "Java", "Spring Boot", "Python", "Django REST", "Hono", "tRPC", "MySQL", "Docker"].map((tech) => (
-              <span 
-              key={`${tech}-${index}`} 
-              className="text-2xl md:text-4xl font-bold font-display tracking-tighter text-muted-foreground/30 hover:text-primary transition-colors cursor-default uppercase"
-              >
-              {tech}
-              </span>
-            ))}
-            </React.Fragment>
-          ))}
-          </motion.div>
-        </div>
-        </section>
-
-        {/* --- TESTIMONIALS --- */}
-        <motion.section 
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="py-12 px-4"
-        >
-        <div className="container mx-auto max-w-4xl">
-          <Card className="relative p-12 rounded-[2rem] bg-primary/5 border border-primary/10 text-center overflow-hidden">
-          <motion.div 
-            animate={{ rotate: [0, 10, 0] }}
-            transition={{ duration: 5, repeat: Infinity }}
-            className="absolute top-4 left-4 opacity-10"
-          >
-            <Quote className="h-20 w-20" />
-          </motion.div>
-          <p className="text-2xl md:text-3xl font-medium italic mb-8 leading-snug relative z-10">
-            "Un développeur hors pair qui comprend les enjeux business autant que les contraintes techniques. Le résultat a dépassé nos attentes."
-          </p>
-          <div className="relative z-10">
-            <p className="font-bold text-lg text-foreground">Marc-Antoine Dupont</p>
-            <p className="text-muted-foreground uppercase tracking-widest text-xs">CTO @ FinTechX</p>
-          </div>
-          </Card>
-        </div>
-        </motion.section>
-
-        {/* --- CONTACT SECTION (FINAL CTA) --- */}
-        <motion.section 
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="py-16 px-4 bg-[#050505] relative overflow-hidden" 
-        id="contact"
-        >
-        <div className="absolute top-1/2 left-1/4 w-72 h-72 bg-primary/5 blur-[100px] rounded-full -z-10" />
-
-        <div className="container mx-auto max-w-5xl">
-          <div className="grid lg:grid-cols-2 gap-10 items-start">
-          
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="space-y-6"
-          >
-            <div>
-            <Badge className="mb-3 bg-primary/10 text-primary border-none text-[10px] px-3 py-0.5 uppercase">{t("home.contact.badge")}</Badge>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter leading-tight text-white">
-              {t("home.contact.title")} <br />
-              <span className="text-primary italic font-serif">{t("home.contact.accent")}</span>
-            </h2>
-            </div>
-            <p className="text-base text-white/40 max-w-sm leading-relaxed">
-            {t("home.contact.description")}
+          <div className="relative z-10 w-full max-w-[1050px]">
+            <h1 className="text-[clamp(30px,8vw,54px)] font-light leading-[.92] tracking-[-.05em] md:text-[clamp(32px,5.5vw,76px)] md:leading-[.86]">
+              Full Stack Developer
+              <br />
+              <span className="arik-italic">& Software Engineer</span>
+            </h1>
+            <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-primary/55 sm:mt-6 sm:text-lg sm:leading-8">
+              {t("home.heroDescription")}
             </p>
-            <div className="space-y-4 pt-2">
-            <div className="flex items-center gap-3 text-white/60 text-sm hover:text-primary transition-colors cursor-pointer group">
-              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 shrink-0 group-hover:border-primary transition-colors">
-              <Mail className="w-4 h-4 text-primary" />
+            <div className="mt-6 flex w-full flex-col items-center justify-center gap-3 sm:mt-8 sm:flex-row sm:gap-4">
+              <Link
+                to="/about"
+                className="arik-button min-h-12 w-full gap-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary sm:w-auto"
+              >
+                {t("home.viewJourney")} <ArrowUpRight size={16} aria-hidden="true" />
+              </Link>
+              <a
+                href={`${import.meta.env.BASE_URL}CV_PFE.pdf`}
+                download
+                className="inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-[2px] border border-primary/20 bg-primary/[.025] px-5 py-3 text-[11px] font-medium uppercase tracking-[.16em] text-primary transition hover:border-primary/50 hover:bg-primary/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary sm:w-auto"
+              >
+                <Download size={16} aria-hidden="true" />
+                {t("home.downloadCv")}
+              </a>
+            </div>
+            
+          </div>
+        </section>
+        <div className="tech-marquee py-10" aria-label={t("home.masteredTechnologies")}>
+          <div className="tech-marquee__track">
+            {[0, 1].map((copy) => (
+              <div className="tech-marquee__group" key={copy} aria-hidden={copy === 1}>
+                {[
+                  "React",
+                  "Django",
+                  "Spring",
+                  "TypeScript",
+                  "Docker",
+                  "PostgreSQL",
+                  "Jenkins",
+                ].map((technology) => (
+                  <div
+                    key={technology}
+                    className="flex min-w-[150px] flex-col items-center gap-4 text-primary/45 transition-colors hover:text-primary/80"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="block h-9 w-9 shrink-0 bg-current"
+                      style={{
+                        maskImage: `url(${import.meta.env.BASE_URL}logos/${technology.toLowerCase()}.svg)`,
+                        WebkitMaskImage: `url(${import.meta.env.BASE_URL}logos/${technology.toLowerCase()}.svg)`,
+                        maskSize: "contain",
+                        WebkitMaskSize: "contain",
+                        maskRepeat: "no-repeat",
+                        WebkitMaskRepeat: "no-repeat",
+                        maskPosition: "center",
+                        WebkitMaskPosition: "center",
+                      }}
+                    />
+                    <span>{technology}</span>
+                  </div>
+                ))}
               </div>
-              <span>rahmaniibrahim042@gmail.com</span>
-            </div>
-            <div className="flex items-center gap-3 text-white/60 text-sm">
-              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 shrink-0">
-              <MapPin className="w-4 h-4 text-primary" />
-              </div>
-              <span>{t("home.contact.location")}</span>
-            </div>
-            </div>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
-            className="bg-white/[0.02] border border-white/10 p-6 md:p-8 rounded-3xl backdrop-blur-sm relative"
-          >
-            <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="grid md:grid-cols-2 gap-5">
-              <div className="space-y-1.5">
-              <label htmlFor="contact-name" className="text-xs font-medium text-white/40 ml-1 uppercase tracking-wider">{t("home.contact.name")}</label>
-              <Input id="contact-name" name="name" autoComplete="name" placeholder={t("home.contact.namePlaceholder")} className="bg-transparent border-white/10 border-0 border-b rounded-none focus-visible:ring-0 focus-visible:border-primary transition-all px-0 h-9 text-sm text-white" required />
-              </div>
-              <div className="space-y-1.5">
-              <label htmlFor="contact-email" className="text-xs font-medium text-white/40 ml-1 uppercase tracking-wider">{t("home.contact.email")}</label>
-              <Input id="contact-email" name="email" type="email" autoComplete="email" placeholder="votre@email.com" className="bg-transparent border-white/10 border-0 border-b rounded-none focus-visible:ring-0 focus-visible:border-primary transition-all px-0 h-9 text-sm text-white" required />
-              </div>
-            </div>
-            <div className="space-y-1.5">
-              <label htmlFor="contact-subject" className="text-xs font-medium text-white/40 ml-1 uppercase tracking-wider">{t("home.contact.subject")}</label>
-              <Input id="contact-subject" name="subject" placeholder={t("home.contact.subjectPlaceholder")} className="bg-transparent border-white/10 border-0 border-b rounded-none focus-visible:ring-0 focus-visible:border-primary transition-all px-0 h-9 text-sm text-white" />
-            </div>
-            <div className="space-y-1.5">
-              <label htmlFor="contact-message" className="text-xs font-medium text-white/40 ml-1 uppercase tracking-wider">{t("home.contact.message")}</label>
-              <Textarea id="contact-message" name="message" placeholder={t("home.contact.messagePlaceholder")} className="bg-transparent border-white/10 border-0 border-b rounded-none focus-visible:ring-0 focus-visible:border-primary transition-all px-0 min-h-[100px] text-sm text-white resize-none" required />
-            </div>
-            <Button type="submit" disabled={isSubmitting} className="w-full h-12 rounded-xl bg-primary text-black font-bold text-sm hover:scale-[1.02] transition-transform active:scale-95">
-              {isSubmitting ? t("home.contact.sending") : t("home.contact.send")}
-            </Button>
-            </form>
-          </motion.div>
-
+            ))}
           </div>
         </div>
-        </motion.section>
+        <section
+          id="services"
+          className="arik-shell grid gap-5 py-10 md:grid-cols-3"
+        >
+          <ServiceCard index="01" title={t("home.landingServices.frontend.title")}>{t("home.landingServices.frontend.description")}</ServiceCard>
+          <ServiceCard index="02" title={t("home.landingServices.backend.title")}>{t("home.landingServices.backend.description")}</ServiceCard>
+          <ServiceCard index="03" title={t("home.landingServices.devops.title")}>{t("home.landingServices.devops.description")}</ServiceCard>
+        </section>
+        <section className="arik-shell py-10 sm:py-12">
+          <div className="mb-7 flex flex-col items-start justify-between gap-4 sm:mb-10 sm:flex-row sm:items-end">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl">{t("home.selectedProjects")}</h2>
+            <Link
+              to="/projects"
+              className="flex items-center gap-3 text-xs uppercase tracking-widest"
+            >
+              <span className="arik-circle">
+                <ArrowUpRight size={15} />
+              </span>
+              {t("home.viewAll")}
+            </Link>
+          </div>
+          {projectsLoading ? (
+            <p role="status" className="arik-panel p-6 text-primary/55">
+              {t("projects.loading")}
+            </p>
+          ) : projectsError ? (
+            <p role="alert" className="arik-panel p-6 text-primary/55">
+              {t("home.projectLoadError")}
+            </p>
+          ) : projects.length ? (
+            <div className="grid gap-6 md:grid-cols-2">
+              {projects.slice(0, 2).map((p) => (
+                <ProjectTile key={p.id} project={p} />
+              ))}
+            </div>
+          ) : (
+            <p className="arik-panel p-6 text-primary/55">
+              {t("home.noProjects")}
+            </p>
+          )}
+        </section>
+        <section className="py-12 text-center">
+          <p className="arik-label">{t("home.processLabel")}</p>
+          <h2 className="mx-auto mt-5 max-w-4xl text-4xl leading-none md:text-[60px]">
+            {t("home.processTitle")} <span className="arik-italic">{t("home.processAccent")}</span>
+          </h2>
+          <p className="mx-auto mt-6 max-w-lg leading-7 text-primary/55">
+            {t("home.processDescription")}
+          </p>
+        </section>
+        <section className="arik-shell relative mx-auto max-w-[1080px] pb-14">
+          <div className="absolute bottom-0 left-1/2 top-0 hidden w-px bg-primary/15 md:block" />
+          {processKeys.map(({ key }, i) => {
+            const s = t(`home.process.${key}`, { returnObjects: true }) as { tag: string; title: string; text: string };
+            return (
+            <article
+              key={s.title}
+              className={`relative mb-6 grid md:mb-[-30px] md:grid-cols-2 ${i % 2 ? "" : "md:text-right"}`}
+            >
+              <div
+                className={`${i % 2 ? "md:col-start-2 md:pl-20" : "md:pr-20"}`}
+              >
+                <div className="arik-panel p-5 sm:p-6">
+                  <span className="arik-label">{s.tag}</span>
+                  <h3 className="mt-2 text-xl uppercase tracking-wide">
+                    {s.title}
+                  </h3>
+                  <p className="mt-5 leading-7 text-primary/55">{s.text}</p>
+                  <p className="mt-6 flex items-center gap-3 text-sm">
+                    <Check size={14} />
+                    {t("home.deliverable")}
+                  </p>
+                </div>
+              </div>
+              <span className="arik-circle absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 text-xs md:flex">
+                0{i + 1}
+              </span>
+            </article>
+            );
+          })}
+        </section>
+        <section
+          id="contact"
+          className="border-y border-primary/15 bg-primary/[.045] px-6 py-14 text-center"
+        >
+          <p className="arik-label">{t("home.contactTitle")}</p>
+          <h2 className="mx-auto mt-5 max-w-5xl text-4xl leading-none md:text-[60px]">
+            {t("home.contactHeading")}
+            <br />
+            <span className="arik-italic">            {t("home.contactAccent")}</span>
+          </h2>
+          <p className="mx-auto mt-6 max-w-lg leading-7 text-primary/55">
+            {t("home.contactDescription")}
+          </p>
+          <a
+            href="mailto:rahmaniibrahim042@gmail.com"
+            className="arik-button mt-6"
+          >
+            {t("home.contactButton")} <ArrowUpRight size={16} />
+          </a>
+        </section>
       </main>
-
       <Footer />
-      </motion.div>
-    </AnimatePresence>
+    </div>
   );
 };
-
 export default Index;

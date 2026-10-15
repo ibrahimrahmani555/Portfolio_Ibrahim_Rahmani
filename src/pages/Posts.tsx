@@ -1,119 +1,89 @@
 import { useEffect, useState } from "react";
+import { ArrowUpRight, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { ArrowUpRight } from "lucide-react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import { formatDate, getPosts, type PostSummary } from "@/lib/api";
-import { useTranslation } from "react-i18next";
-import fallbackCover from "@/assets/workspace.jpg";
+
+const PostCard = ({ post }: { post: PostSummary }) => {
+  const { t } = useTranslation();
+  return (
+  <article className="group arik-panel flex h-full flex-col overflow-hidden">
+    <Link to={`/posts/${post.slug}`} className="relative block aspect-video overflow-hidden bg-card">
+      {post.cover_image_url ? (
+        <img src={post.cover_image_url} alt={post.title} loading="lazy" className="h-full w-full object-cover opacity-75 transition duration-700 group-hover:scale-105 group-hover:opacity-100" />
+      ) : <div className="h-full bg-primary/[.04]" />}
+      <span className="noise absolute inset-0" />
+      <span className="arik-circle absolute right-6 top-6 opacity-0 transition group-hover:opacity-100"><ArrowUpRight size={16} /></span>
+    </Link>
+    <div className="flex flex-1 flex-col p-5">
+      <div className="flex items-center justify-between gap-4 text-[10px] uppercase tracking-[.15em] text-primary/45">
+        <span>{post.category || post.tags[0] || t("posts.featured")}</span>
+        <span>{formatDate(post.published_at)}</span>
+      </div>
+      <h2 className="mt-5 text-xl leading-tight text-primary transition group-hover:text-white">{post.title}</h2>
+      <p className="mt-4 line-clamp-3 leading-7 text-primary/50">{post.excerpt}</p>
+      <div className="mt-auto flex items-center justify-between pt-8">
+        <span className="flex items-center gap-2 text-xs text-primary/45"><Clock size={14} />{t("posts.minutes", { count: post.read_time })}</span>
+        <Link to={`/posts/${post.slug}`} className="text-[11px] uppercase tracking-[.15em]">{t("posts.read")}</Link>
+      </div>
+    </div>
+  </article>
+  );
+};
 
 const Posts = () => {
   const { t, i18n } = useTranslation();
   const [posts, setPosts] = useState<PostSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const heroPost = posts.find((post) => post.featured) || posts[0];
 
   useEffect(() => {
     const controller = new AbortController();
+    setLoading(true);
     getPosts(controller.signal)
-      .then((data) => {
-        setPosts(data);
-        setError(false);
-      })
+      .then((data) => { setPosts(data); setError(false); })
       .catch((requestError) => {
-        if (requestError instanceof DOMException && requestError.name === "AbortError") return;
-        setError(true);
+        if (!(requestError instanceof DOMException && requestError.name === "AbortError")) setError(true);
       })
       .finally(() => setLoading(false));
     return () => controller.abort();
   }, [i18n.resolvedLanguage]);
 
   return (
-    <div className="min-h-screen bg-[#030303] text-white">
+    <div className="min-h-screen">
       <Navigation />
-      <main id="main-content" tabIndex={-1} className="pt-32 pb-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="mb-20">
-              <h1 className="font-display text-6xl md:text-8xl font-bold mb-8 tracking-tighter">
-                INSIGHTS <span className="text-white/20 italic">& </span>
-                ARTICLES<span className="text-primary">.</span>
-              </h1>
-            </div>
-
-            {loading && (
-              <p role="status" className="text-center text-white/40">{t("posts.loading")}</p>
-            )}
-
-            {error && !loading && (
-              <p role="alert" className="text-center text-red-400">
-                {t("posts.error")}
-              </p>
-            )}
-
-            {!loading && !error && posts.length === 0 && (
-              <p className="text-center text-white/40">{t("posts.empty")}</p>
-            )}
-
-            {!loading && !error && posts.length > 0 && (
-              <section aria-labelledby="all-posts-title">
-                <h2 id="all-posts-title" className="mb-10 text-sm font-bold uppercase tracking-widest text-white/50">
-                  {t("posts.all")}
-                </h2>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-                  {posts.map((post, index) => (
-                    <motion.article
-                      key={post.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.45, delay: Math.min(index * 0.06, 0.24) }}
-                      viewport={{ once: true, amount: 0.15 }}
-                      className="group min-w-0 border border-[#302d28] bg-[#151513] p-5 transition-colors duration-300 hover:border-[#756851] focus-within:border-primary/70"
-                    >
-                      <Link
-                        to={`/posts/${post.slug}`}
-                        className="flex h-full flex-col focus-visible:outline-none"
-                        aria-label={`${t("posts.read")} : ${post.title}`}
-                      >
-                        <div className="relative aspect-[16/10] overflow-hidden bg-[#0b0b0a]">
-                          <img
-                            src={post.cover_image_url || fallbackCover}
-                            alt=""
-                            className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-[1.035] group-hover:opacity-100"
-                            loading="lazy"
-                          />
-                          <span className="absolute inset-0 bg-black/10 transition-colors group-hover:bg-black/25" />
-                          <span className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#5b5143] bg-[#1b1916]/90 text-[#d3c1a5] backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:border-primary group-hover:bg-primary group-hover:text-black">
-                            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                          </span>
-                        </div>
-
-                        <div className="flex flex-1 flex-col px-1 pb-2 pt-7">
-                          <time
-                            dateTime={post.published_at || undefined}
-                            className="mb-3 text-[10px] font-medium uppercase tracking-[0.08em] text-[#8d806d]"
-                          >
-                            {formatDate(post.published_at)}
-                          </time>
-                          <h3 className="font-display text-[1.35rem] font-normal leading-[1.3] tracking-wide text-[#dfd3bf] transition-colors group-hover:text-primary">
-                            {post.title}
-                          </h3>
-                          <p className="mt-3 line-clamp-3 text-sm leading-6 text-[#9f927f]">
-                            {post.excerpt}
-                          </p>
-                          <span className="mt-7 w-fit border border-[#423c33] px-2.5 py-1.5 text-[9px] font-medium uppercase tracking-wide text-[#aa9b84] transition-colors group-hover:border-primary/60 group-hover:text-primary">
-                            {post.category || post.tags[0] || "Article"}
-                          </span>
-                        </div>
-                      </Link>
-                    </motion.article>
-                  ))}
-                </div>
-              </section>
-            )}
+      <main id="main-content" tabIndex={-1}>
+        <header className="arik-shell grid min-h-[460px] items-end gap-8 pb-10 pt-28 md:grid-cols-2">
+          <div>
+            <p className="arik-label">{t("posts.eyebrow")}</p>
+            <h1 className="mt-6 text-4xl leading-[.9] md:text-[64px]">Blog &<br /><span className="arik-italic">articles</span></h1>
+            <p className="mt-8 max-w-xl text-lg leading-8 text-primary/55">{t("posts.description")}</p>
+            {heroPost && <Link to={`/posts/${heroPost.slug}`} className="arik-button mt-6">{t("posts.featuredButton")} <ArrowUpRight size={16} /></Link>}
           </div>
-        </div>
+          <div className="relative mx-auto h-[300px] md:h-[360px] w-full overflow-hidden bg-primary/[.04]">
+            <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-background" />
+            {heroPost?.cover_image_url && <img src={heroPost.cover_image_url} alt={heroPost.title} className="h-full w-full object-cover opacity-80 grayscale transition duration-700 hover:grayscale-0" />}
+            <span className="noise absolute inset-0" />
+          </div>
+        </header>
+
+      
+
+        {loading && <p role="status" className="mt-10 text-center text-primary/45">{t("posts.loading")}</p>}
+        {error && !loading && <p role="alert" className="mt-10 text-center text-red-400">{t("posts.error")}</p>}
+        {!loading && !error && posts.length === 0 && <p className="mt-10 text-center text-primary/45">{t("posts.empty")}</p>}
+        {!loading && !error && posts.length > 0 && (
+          <section className="arik-shell py-12">
+            <div className="mb-10 flex items-end justify-between border-b border-primary/15 pb-6">
+              <h2 className="text-4xl md:text-5xl">{t("posts.latest")}</h2>
+              <span className="arik-label">{posts.length.toString().padStart(2, "0")} {t("posts.publications")}</span>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">{posts.map((post) => <PostCard key={post.id} post={post} />)}</div>
+          </section>
+        )}
       </main>
       <Footer />
     </div>

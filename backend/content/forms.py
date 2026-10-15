@@ -8,17 +8,19 @@ MAX_IMAGE_SIZE = 5 * 1024 * 1024
 
 
 def validate_image(uploaded_file):
-    if not uploaded_file:
-        return uploaded_file
-    if uploaded_file.content_type not in ALLOWED_IMAGE_TYPES:
-        raise forms.ValidationError("Format accepté : JPEG, PNG, WebP ou GIF.")
     if uploaded_file.size > MAX_IMAGE_SIZE:
-        raise forms.ValidationError("L’image ne doit pas dépasser 5 Mo.")
-    return uploaded_file
+        raise forms.ValidationError("L'image ne doit pas dépasser 5 Mo.")
+    if uploaded_file.content_type not in ALLOWED_IMAGE_TYPES:
+        raise forms.ValidationError("Formats acceptés : JPEG, PNG, WebP et GIF.")
 
 
 class ProjectAdminForm(forms.ModelForm):
-    image_upload = forms.FileField(label="Image du projet", required=False, validators=[validate_image])
+    image_upload = forms.FileField(
+        required=False,
+        validators=[validate_image],
+        label="Image",
+        help_text="L'image sera enregistrée directement dans Neon (maximum 5 Mo).",
+    )
 
     class Meta:
         model = Project
@@ -37,7 +39,12 @@ class ProjectAdminForm(forms.ModelForm):
 
 
 class PostAdminForm(forms.ModelForm):
-    cover_image_upload = forms.FileField(label="Image de couverture", required=False, validators=[validate_image])
+    cover_image_upload = forms.FileField(
+        required=False,
+        validators=[validate_image],
+        label="Image de couverture",
+        help_text="L'image sera enregistrée directement dans Neon (maximum 5 Mo).",
+    )
 
     class Meta:
         model = Post

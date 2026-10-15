@@ -1,111 +1,104 @@
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Github, Languages, Linkedin, Menu, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Button } from "./ui/button";
-import type { SupportedLanguage } from "@/i18n";
+
+const socialLinks = [
+  { label: "GitHub", href: "https://github.com/ibrahimrahmani555", Icon: Github },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/ibrahim-rahmani-433418387/", Icon: Linkedin },
+];
 
 const Navigation = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
-  const { t, i18n } = useTranslation();
-
-  const language: SupportedLanguage = i18n.resolvedLanguage?.startsWith("en") ? "en" : "fr";
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
+  const { i18n, t } = useTranslation();
+  const lang = i18n.resolvedLanguage?.startsWith("en") ? "en" : "fr";
   const links = [
-    { name: t("navigation.home"), path: "/" },
-    { name: t("navigation.posts"), path: "/posts" },
-    { name: t("navigation.projects"), path: "/projects" },
-    { name: t("navigation.about"), path: "/about" },
+    [t("navigation.home"), "/"],
+    [t("navigation.posts"), "/posts"],
+    [t("navigation.projects"), "/projects"],
+    [t("navigation.about"), "/about"],
   ];
 
-  const isActive = (path: string) => location.pathname === path;
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 16);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
 
-  const changeLanguage = (nextLanguage: SupportedLanguage) => {
-    void i18n.changeLanguage(nextLanguage);
-    setIsOpen(false);
+  const selectLanguage = (language: "fr" | "en") => {
+    void i18n.changeLanguage(language);
+    setLanguageMenuOpen(false);
   };
 
-  const LanguageSwitcher = () => (
-    <div className="flex items-center rounded-full border border-border/60 bg-background/60 p-1" role="group" aria-label={t("navigation.language")}>
-      {(["fr", "en"] as const).map((item) => (
+  const languageOptions = (
+    <div className="absolute right-0 top-full z-10 mt-2 flex min-w-20 flex-col overflow-hidden rounded-xl border border-primary/15 bg-background/95 p-1 text-center shadow-xl backdrop-blur-xl">
+      {(["fr", "en"] as const).map((language) => (
         <button
-          key={item}
-          type="button"
-          onClick={() => changeLanguage(item)}
-          aria-pressed={language === item}
-          className={`rounded-full px-2.5 py-1 text-xs font-semibold uppercase transition-colors ${
-            language === item ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
-          }`}
+          key={language}
+          onClick={() => selectLanguage(language)}
+          className={`rounded-lg px-3 py-2 transition hover:bg-primary/10 ${lang === language ? "text-primary" : "text-primary/60"}`}
+          aria-current={lang === language ? "true" : undefined}
         >
-          {item}
+          {language.toUpperCase()}
         </button>
       ))}
     </div>
   );
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-cover backdrop-blur-xl border-b border-border/50">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center gap-2 font-display text-xl sm:text-2xl font-bold text-primary hover:text-accent transition-colors group">
-            <img src={`${import.meta.env.BASE_URL}i%20(1).png`} alt="Logo Rahmani Ibrahim" className="h-12 w-auto transition-transform" />
-            Rahmani Ibrahim
-          </Link>
-
-          <div className="hidden md:flex items-center gap-8">
-            {links.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                aria-current={isActive(link.path) ? "page" : undefined}
-                className={`text-sm font-medium transition-all duration-300 relative group ${
-                  isActive(link.path) ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {link.name}
-                <span className={`absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-accent transition-transform origin-left ${
-                  isActive(link.path) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                }`} />
-              </Link>
-            ))}
-            <LanguageSwitcher />
-          </div>
-
-          <div className="md:hidden flex items-center gap-2">
-            <LanguageSwitcher />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-primary/10"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label={t("navigation.menu")}
-              aria-expanded={isOpen}
-              aria-controls="mobile-navigation"
+    <header className="fixed inset-x-0 top-4 z-50 px-4">
+      <nav className={`mx-auto flex w-full items-center justify-between gap-3 rounded-2xl border px-3 py-2 text-[11px] uppercase tracking-[.15em] transition-colors duration-300 md:w-fit md:justify-start ${scrolled ? "nav-scrolled" : "border-transparent bg-transparent"}`}>
+        <Link to="/" className="flex shrink-0 items-center px-2" aria-label="Ibrahim Rahmani - Accueil">
+          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="Ibrahim Rahmani" width={32} height={32} className="h-8 w-8 object-contain" />
+        </Link>
+        <div className="hidden items-center gap-4 md:flex">
+          {links.map(([name, path]) => <Link key={path} to={path} className="hover:text-white">{name}</Link>)}
+          {socialLinks.map(({ label, href, Icon }) => (
+            <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} className="transition hover:text-white">
+              <Icon size={16} />
+            </a>
+          ))}
+          <div className="relative">
+            <button
+              onClick={() => setLanguageMenuOpen(!languageMenuOpen)}
+              className="flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-primary/10"
+              aria-label={t("navigation.chooseLanguage", { language: lang.toUpperCase() })}
+              aria-expanded={languageMenuOpen}
             >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
+              <Languages size={18} />
+            </button>
+            {languageMenuOpen && languageOptions}
           </div>
         </div>
-
-        {isOpen && (
-          <div id="mobile-navigation" className="md:hidden py-4 space-y-2 animate-fade-in border-t border-border/30">
-            {links.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setIsOpen(false)}
-                aria-current={isActive(link.path) ? "page" : undefined}
-                className={`block py-3 px-4 text-sm font-medium rounded-lg transition-all duration-300 ${
-                  isActive(link.path) ? "text-primary bg-primary/10 border border-primary/30" : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
-                }`}
-              >
-                {link.name}
-              </Link>
+        <button className="md:hidden" onClick={() => setOpen(!open)} aria-label={open ? t("navigation.closeMenu") : t("navigation.openMenu")}>
+          {open ? <X size={18} /> : <Menu size={18} />}
+        </button>
+      </nav>
+      {open && (
+        <div className="arik-panel mx-auto mt-2 flex w-56 flex-col gap-4 rounded-2xl p-5 text-center text-xs uppercase tracking-widest md:hidden">
+          {links.map(([name, path]) => <Link key={path} to={path} onClick={() => setOpen(false)}>{name}</Link>)}
+          <div className="flex items-center justify-center gap-5 border-y border-primary/15 py-3">
+            {socialLinks.map(({ label, href, Icon }) => (
+              <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label}><Icon size={18} /></a>
             ))}
+            <div className="relative">
+              <button
+                onClick={() => setLanguageMenuOpen(!languageMenuOpen)}
+                className="flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-primary/10"
+                aria-label={t("navigation.chooseLanguage", { language: lang.toUpperCase() })}
+                aria-expanded={languageMenuOpen}
+              >
+                <Languages size={18} />
+              </button>
+              {languageMenuOpen && languageOptions}
+            </div>
           </div>
-        )}
-      </div>
-    </nav>
+        </div>
+      )}
+    </header>
   );
 };
 
