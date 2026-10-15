@@ -64,7 +64,7 @@ class ProjectViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         language = request_language(self.request)
         translations = ProjectTranslation.objects.filter(language=language)
-        queryset = Project.objects.filter(published=True).defer("image_data", "description").prefetch_related(
+        queryset = Project.objects.filter(published=True).defer("description").prefetch_related(
             Prefetch("translations", queryset=translations, to_attr="selected_translations")
         )
         featured = self.request.query_params.get("featured")
@@ -80,7 +80,7 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):
         language = request_language(self.request)
         post_translations = PostTranslation.objects.filter(language=language)
         category_translations = CategoryTranslation.objects.filter(language=language)
-        queryset = Post.objects.filter(status=Post.Status.PUBLISHED).defer("cover_image_data", "content").select_related("category").prefetch_related(
+        queryset = Post.objects.filter(status=Post.Status.PUBLISHED).defer("content").select_related("category").prefetch_related(
             Prefetch("translations", queryset=post_translations, to_attr="selected_translations"),
             Prefetch("category__translations", queryset=category_translations, to_attr="selected_translations"),
         )
